@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   host:
-    build: .
+    build: host/
     container_name: sec_host
     ports:
       - "2222:22"
