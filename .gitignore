@@ -1,2 +1,7 @@
 artifacts/*
 .DS_Store
+__pycache__/
+audit-2026/
+docs/TEACHING-PLAN-2026.*
+docs/*.html
+index.html
