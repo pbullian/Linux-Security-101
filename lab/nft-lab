@@ -1,0 +1,31 @@
+#!/bin/sh
+# Replace/persist only `table inet filter`, never Docker's DNS NAT tables.
+set -eu
+lab_rules=$(mktemp)
+trap 'rm -f "$lab_rules"' EXIT HUP INT TERM
+if nft list table inet filter >/dev/null 2>&1; then
+    printf '%s\n' 'delete table inet filter' > "$lab_rules"
+fi
+case "${1:-}" in
+    reset)
+        cat >> "$lab_rules" <<'RULES'
+table inet filter {
+    chain input {
+        type filter hook input priority 0; policy accept;
+    }
+}
+RULES
+        ;;
+    load)
+        [ "$#" -eq 2 ] || { echo 'Usage: nft-lab load FILE' >&2; exit 2; }
+        cat "$2" >> "$lab_rules"
+        ;;
+    save)
+        nft list table inet filter > "$lab_rules"
+        install -m 0600 "$lab_rules" /etc/nftables-lab.conf
+        exit 0
+        ;;
+    *) echo 'Usage: nft-lab reset | load FILE | save' >&2; exit 2 ;;
+esac
+nft --check -f "$lab_rules"
+nft -f "$lab_rules"

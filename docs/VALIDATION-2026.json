@@ -1,0 +1,669 @@
+{
+  "order": [
+    1,
+    2,
+    4,
+    5,
+    3,
+    7,
+    8,
+    6,
+    10,
+    9,
+    11,
+    12
+  ],
+  "guide_sha256": "b009c2a4cc220acb6167f4aa43c396d26fe3c6e2ee0f35aa900e128be11ef708",
+  "extensions_sha256": "df526f50a644656baa134238d48ae673f09ce705e1428db8627c70466a46ebb8",
+  "architecture": "x86_64",
+  "checks": [
+    {
+      "check": "baseline",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.35
+    },
+    {
+      "check": "client-tools",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.29
+    },
+    {
+      "check": "accounts",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.62
+    },
+    {
+      "check": "alice-sudo",
+      "where": "TARGET",
+      "user": "alice",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.28
+    },
+    {
+      "check": "bob-sudo-denied",
+      "where": "TARGET",
+      "user": "bob",
+      "exit": 1,
+      "expected": 1,
+      "passed": true,
+      "seconds": 0.29
+    },
+    {
+      "check": "suid-inventory",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.38
+    },
+    {
+      "check": "suid-before",
+      "where": "TARGET",
+      "user": "student",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.23
+    },
+    {
+      "check": "suid-fix",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.25
+    },
+    {
+      "check": "suid-after",
+      "where": "TARGET",
+      "user": "student",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.27
+    },
+    {
+      "check": "umask",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.23
+    },
+    {
+      "check": "acl-setup",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.28
+    },
+    {
+      "check": "acl-alice-write",
+      "where": "TARGET",
+      "user": "alice",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.26
+    },
+    {
+      "check": "acl-bob-read",
+      "where": "TARGET",
+      "user": "bob",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.25
+    },
+    {
+      "check": "acl-bob-write-refused",
+      "where": "TARGET",
+      "user": "bob",
+      "exit": 1,
+      "expected": 1,
+      "passed": true,
+      "seconds": 0.27
+    },
+    {
+      "check": "server-fingerprint",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.26
+    },
+    {
+      "check": "client-fingerprint",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.47
+    },
+    {
+      "check": "pam-config",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.26
+    },
+    {
+      "check": "password-works",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.67
+    },
+    {
+      "check": "five-failures",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 18.83
+    },
+    {
+      "check": "lock-counter",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.38
+    },
+    {
+      "check": "correct-password-locked",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 255,
+      "expected": 255,
+      "passed": true,
+      "seconds": 2.87
+    },
+    {
+      "check": "reset-lock",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.35
+    },
+    {
+      "check": "install-keys",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 4.3
+    },
+    {
+      "check": "ssh-harden",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.43
+    },
+    {
+      "check": "key-allowed",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.97
+    },
+    {
+      "check": "password-refused",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 255,
+      "expected": 255,
+      "passed": true,
+      "seconds": 0.76
+    },
+    {
+      "check": "unauthorized-group-refused",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 255,
+      "expected": 255,
+      "passed": true,
+      "seconds": 0.76
+    },
+    {
+      "check": "source-policy",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 1.55
+    },
+    {
+      "check": "web-before-filter",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.43
+    },
+    {
+      "check": "ssh-other-source-refused",
+      "where": "LAPTOP",
+      "user": "root",
+      "exit": 255,
+      "expected": 255,
+      "passed": true,
+      "seconds": 1.85
+    },
+    {
+      "check": "firewall",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.49
+    },
+    {
+      "check": "allowed-after-filter",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.98
+    },
+    {
+      "check": "other-client-refused",
+      "where": "LAPTOP",
+      "user": "root",
+      "exit": 28,
+      "expected": 28,
+      "passed": true,
+      "seconds": 2.97
+    },
+    {
+      "check": "save-firewall",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.3
+    },
+    {
+      "check": "restart-target",
+      "where": "LAPTOP",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.87
+    },
+    {
+      "check": "check-persistence",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.24
+    },
+    {
+      "check": "ssh-after-restart",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.68
+    },
+    {
+      "check": "fail2ban-setup",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 3.73
+    },
+    {
+      "check": "five-http-events",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 3.37
+    },
+    {
+      "check": "five-events-not-banned",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.99
+    },
+    {
+      "check": "sixth-http-event",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 3.25
+    },
+    {
+      "check": "six-events-banned",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.8
+    },
+    {
+      "check": "banned-http-refused",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 7,
+      "expected": 7,
+      "passed": true,
+      "seconds": 0.23
+    },
+    {
+      "check": "unban",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.37
+    },
+    {
+      "check": "http-after-unban",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.27
+    },
+    {
+      "check": "ban-cleanup",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 1.05
+    },
+    {
+      "check": "mount-observation",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.34
+    },
+    {
+      "check": "noexec-binary-refused",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 126,
+      "expected": 126,
+      "passed": true,
+      "seconds": 0.27
+    },
+    {
+      "check": "noexec-script-refused",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 126,
+      "expected": 126,
+      "passed": true,
+      "seconds": 0.28
+    },
+    {
+      "check": "noexec-interpreter-limit",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.24
+    },
+    {
+      "check": "noexec-restored",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 126,
+      "expected": 126,
+      "passed": true,
+      "seconds": 0.22
+    },
+    {
+      "check": "chroot-start",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 1.34
+    },
+    {
+      "check": "chroot-http",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.34
+    },
+    {
+      "check": "chroot-inside",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.34
+    },
+    {
+      "check": "chroot-cleanup",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.28
+    },
+    {
+      "check": "update-refresh",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 33.73
+    },
+    {
+      "check": "security-update-policy",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 14.84
+    },
+    {
+      "check": "aide-baseline",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.76
+    },
+    {
+      "check": "aide-change",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 4,
+      "expected": 4,
+      "passed": true,
+      "seconds": 0.63
+    },
+    {
+      "check": "aide-reviewed-baseline",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.72
+    },
+    {
+      "check": "osquery-install",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 6.88
+    },
+    {
+      "check": "osquery-inventory",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.84
+    },
+    {
+      "check": "osquery-investigation",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.88
+    },
+    {
+      "check": "extension-cap-policy",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.37
+    },
+    {
+      "check": "extension-cap-test",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 9.9
+    },
+    {
+      "check": "extension-cap-evidence",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.51
+    },
+    {
+      "check": "extension-meter-policy",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 1.38
+    },
+    {
+      "check": "extension-meter-two-allowed",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.31
+    },
+    {
+      "check": "extension-meter-third-refused",
+      "where": "CLIENT",
+      "user": "root",
+      "exit": 7,
+      "expected": 7,
+      "passed": true,
+      "seconds": 0.27
+    },
+    {
+      "check": "extension-meter-other-source-allowed",
+      "where": "LAPTOP",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 2.48
+    },
+    {
+      "check": "extension-cleanup",
+      "where": "TARGET",
+      "user": "root",
+      "exit": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.36
+    }
+  ],
+  "images": {
+    "host": "sha256:1bb01ba76448756d982e33de19aba42fa28a7b5fa9e0bcbb33854b0d93426865"
+  },
+  "fresh_host_keys_differ": true,
+  "osquery_version": "osqueryi version 5.23.1",
+  "invalid_firewall_preserves_table": true,
+  "all_passed": true,
+  "cleaned_up": true,
+  "review_date": "2026-10-14"
+}

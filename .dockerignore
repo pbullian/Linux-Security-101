@@ -1,0 +1,5 @@
+.git
+artifacts
+audit-2026
+__pycache__
+*.pdf
