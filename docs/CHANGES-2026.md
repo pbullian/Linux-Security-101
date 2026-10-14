@@ -34,3 +34,9 @@ The final fresh run on 14 October 2026 passed **71/71 executable blocks** in tea
 Build the images, then run `python3 tests/validate_guide.py --extensions`. The validator checks the guide's exact executable blocks, expected nonzero outcomes, independent host keys, loopback exposure, log readability and binary ownership. It records the guide hash and removes its own disposable project. See the README for teaching order, output paths and dependencies.
 
 Linux x86_64 is the exercised platform. ARM execution, macOS/Windows Docker Desktop and VM boot/scheduler behaviour still need separate classroom preflight. Checksums for an architecture are not proof of runtime testing on that architecture.
+
+## Teaching and report revision
+
+The generic E1–E9 sequence now alternates about 20 minutes of explanation with practice and a short review. Student questions, a Markdown report template, an evidence manifest and submission guidance use the same IDs. Questions require predictions, actual output, an explanation of limits and an assigned changed-condition scenario. Optional tutoring hints do not provide copy protection.
+
+This revision changes prose and student documents only. All 63 core and 8 extension Bash blocks remain byte-for-byte identical to the previously validated revision. The historical runtime result retains its original whole-document hashes; [the documentation comparison](DOCUMENTATION-VALIDATION-2026.json) records the new prose hash and unchanged command blocks. No new runtime pass is claimed for this documentation-only change.

@@ -2,11 +2,13 @@
 
 Disposable Ubuntu 24.04 target and Debian 12 client for the CPE Linux security course.
 
-- [Corrected practical guide](docs/TP-2026.md)
+- [Student exercises E1–E9](docs/EXERCISES.md)
+- [Markdown report template](docs/REPORT-TEMPLATE.md) and [submission instructions](docs/SUBMISSION.md)
+- [Corrected practical command reference](docs/TP-2026.md)
 - [Optional rate and concurrency practical](docs/EXTENSIONS-2026.md)
 - [Changes and validation](docs/CHANGES-2026.md)
 
-The course uses short theory pairs followed by practice and a debrief. Session 1 follows guide sections **1, 2, 4, 5**; session 2 follows **3, 7, 8**; the subsequent session follows **6, 10, 9, 11, 12**. Keep the same containers between sessions. The guide is a complete command reference, not a single-afternoon exercise.
+Each cycle uses about **20 minutes of explanation**, **30–45 minutes of practice** and **5 minutes of review**. Part 1 (E1–E3) follows guide sections **1, 2, 4, 5**; part 2 (E4–E6) follows **3, 7, 8**; part 3 (E7–E9) follows **6, 10, 9, 11, 12**. Keep the same containers through the sequence. There are no assigned teaching days or fixed clock times. The full core sequence takes about 10 hours before setup and breaks; spread it over the available teaching blocks.
 
 ## Start
 

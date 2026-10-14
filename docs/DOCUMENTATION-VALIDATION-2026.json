@@ -1,0 +1,20 @@
+{
+  "kind": "teaching-document revision; no new runtime run",
+  "runtime_reference_commit": "3bffd07645a78f5558eb8ef300a1ec95d1e5fd8d",
+  "files": {
+    "docs/TP-2026.md": {
+      "executable_blocks": 63,
+      "blocks_identical_to_validated_revision": true,
+      "original_document_sha256": "b009c2a4cc220acb6167f4aa43c396d26fe3c6e2ee0f35aa900e128be11ef708",
+      "current_document_sha256": "e16e2f9d84ddb0d5a6469716c0ece85a2cfce87cc371d98fb6fc0719c9b1530a",
+      "command_blocks_sha256": "6da93cf58004d403ca9d0fbd4fcbcba85669adc04a2d41e06a3ccdc2e0fb617b"
+    },
+    "docs/EXTENSIONS-2026.md": {
+      "executable_blocks": 8,
+      "blocks_identical_to_validated_revision": true,
+      "original_document_sha256": "df526f50a644656baa134238d48ae673f09ce705e1428db8627c70466a46ebb8",
+      "current_document_sha256": "df526f50a644656baa134238d48ae673f09ce705e1428db8627c70466a46ebb8",
+      "command_blocks_sha256": "9fcb57605e76df58e7531be50a97732740c2970835d14568fbd2612472a63073"
+    }
+  }
+}
