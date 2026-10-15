@@ -1,380 +1,669 @@
-# Student exercises
+# Student exercises in the original phase order
 
-Use the E1–E9 IDs in your report. Your teacher assigns the exercises and one scenario variant (A or B) for each. The TP section numbers are command-reference locations, not exercise IDs. Keep the same lab state through the sequence; later tasks use earlier configuration.
+## The mission and why we start with an audit
 
-Each cycle starts with about 20 minutes of explanation, followed by your experiment and a 5-minute review. Record your prediction before testing. Commands are available in [TP-2026.md](https://github.com/pbullian/Linux-Security-101/blob/main/docs/TP-2026.md), so focus on the decision, the actual result and what it means.
+You administer a small Linux server that must remain usable for approved work. First understand its threat surface: what an attacker can touch or interact with. Inventory what is running, why it is needed, who can reach it and which identity runs it. Then restrict unnecessary access, maintain software and detect changes through the later phases.
 
-Use [REPORT-TEMPLATE.md](https://github.com/pbullian/Linux-Security-101/blob/main/docs/REPORT-TEMPLATE.md) and follow [SUBMISSION.md](https://github.com/pbullian/Linux-Security-101/blob/main/docs/SUBMISSION.md). A counter-test may be a refused operation, a controlled difference or a corroborating check, depending on the exercise. Do not fabricate a failure when everything works: explain a real limitation instead.
+Phase 1 establishes the before-state. You are not asked to invent vulnerabilities or stop every service. Record observations, justified recommendations and questions needing another test. Later phases must show the effect and limits of the control you changed.
 
-| Exercise | Topic | TP sections | Explain / practice / review |
+## What you do and submit
+
+After a short explanation, complete the matching TP before moving to the next phase. Use the original phase numbers throughout your report. TP reference section numbers are locations for command blocks; the map below tells you which blocks to use. Phase 11 has two practical blocks, 11A and 11B, within the same phase.
+
+Submit one ZIP with report.md, manifest.json and linked evidence files. For each assigned phase, answer five short questions: prediction, decision, evidence, interpretation and the teacher's scenario variant. Keep actual command/context/output, explain why the result matters, and state a limitation. Finish with a risk-delta note of at most 200 words.
+
+Read [REPORT-EXAMPLE.md](REPORT-EXAMPLE.md) before starting. It shows a complete Phase 1 entry with explicitly fictional evidence. Use [REPORT-TEMPLATE.md](REPORT-TEMPLATE.md) for your own results and [SUBMISSION.md](SUBMISSION.md) for the structure and rubric. The executable commands are in [TP-2026.md](TP-2026.md), with [EXTENSIONS-2026.md](EXTENSIONS-2026.md) for TP 11A.
+
+## Phase 0: setup checklist
+
+- [ ] Both containers run and I can identify the target/client/laptop contexts.
+- [ ] I know when to use root and when a test must run as Alice, Bob or student.
+- [ ] I checked the tools, target name resolution and relevant port mapping.
+- [ ] I saved a small file under /artifacts and found it on the laptop.
+- [ ] I know the recovery console and the difference between restart and recreation.
+- [ ] I read the worked report example and know the assigned phases/scenarios.
+
+Record platform details and any setup problem. Phase 0 is a readiness check, not a scored hardening result.
+
+# Phase map
+
+| Phase | Original concept | TP reference | Explain / practice / review |
 |---|---|---|---|
-| E1 | Accounts and delegated administration | 1 and 2 | 20 / 40 / 5 min |
-| E2 | Permissions and a deliberate SUID path | 4 | 20 / 40 / 5 min |
-| E3 | Creation defaults and inherited ACLs | 5 | 20 / 30 / 5 min |
-| E4 | Password failures and SSH key access | 3 | 20 / 45 / 5 min |
-| E5 | Source policy and stateful filtering | 7 | 20 / 45 / 5 min |
-| E6 | Log events and temporary bans | 8 | 20 / 40 / 5 min |
-| E7 | Mount restrictions and a limited service identity | 6 and 10 | 20 / 45 / 5 min |
-| E8 | Updates and reviewed integrity changes | 9 and 11 | 20 / 45 / 5 min |
-| E9 | Inventory and an evidence-based investigation | 12 | 20 / 40 / 5 min |
-
+| 0 | Mission, setup and deliverables | README / setup checklist | 15 / 15–20 / 5 min |
+| 1 | Understanding the threat surface | 1 | 20 / 20 / 5 min |
+| 2 | Accounts and sudo | 2 | 20 / 25 / 5 min |
+| 3 | PAM: Pluggable Authentication Modules | 3: server-fingerprint through reset-lock | 20 / 25 / 5 min |
+| 4 | SSH: keys over passwords | 3: install-keys through unauthorized-group-refused | 20 / 30 / 5 min |
+| 5 | SUID and SGID | 4 | 20 / 30 / 5 min |
+| 6 | umask: default permissions | 5: umask block | 10 / 15 / 5 min |
+| 7 | ACL: Access Control Lists | 5: acl-setup through acl-bob-write-refused | 15 / 25 / 5 min |
+| 8 | fstab and mount options | 6 | 20 / 25 / 5 min |
+| 9 | Remote access restrictions | 7: source-policy through ssh-other-source-refused | 15 / 20 / 5 min |
+| 10 | Host firewall with nftables | 7: firewall through ssh-after-restart | 20 / 35 / 5 min |
+| 11 | Rate limits, connection caps and Fail2ban | 11A: EXTENSIONS-2026.md; 11B: reference section 8 | 30 / 60 / 5 min |
+| 12 | Updates and baseline hygiene | 9 | 20 / 25 / 5 min |
+| 13 | Chroot | 10 | 20 / 35 / 5 min |
+| 14 | AIDE: file integrity monitoring | 11 | 20 / 30 / 5 min |
+| 15 | osquery | 12 | 20 / 35 / 5 min |
 
 <!-- PAGEBREAK -->
 
-# E1: Accounts and delegated administration
+# Phase 1: Understanding the threat surface
 
-**Goal:** Observe the target, give Alice an administrative role, and prove that Bob does not have that role.
+**Why:** We cannot choose sensible hardening controls without knowing what is present and needed.
 
-TP sections **1 and 2**. Student work: about **40 minutes**.
+**Goal:** Build an initial inventory and justify what to keep, restrict or investigate.
 
-### E1.1 Prediction
+**Commands:** TP reference 1. **Practice:** about 20 minutes.
+
+### 1.1 Prediction
+
+Before running commands, name one required service you expect and one threat-surface question you want to investigate.
+
+### 1.2 Decision
+
+Choose two meaningful observations. For each, state its purpose and a keep, restrict or investigate recommendation with a reason. Do not change configuration in this phase.
+
+### 1.3 Evidence
+
+Attach listener and process output. In a small findings table, identify the address/port or process, execution context, evidence path and question raised.
+
+### 1.4 Interpretation
+
+Explain one plausible risk, the assumption behind it and one next test. What does this inventory fail to establish?
+
+### 1.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
+
+**Variant A:** You find an unfamiliar root-owned listener. Would you stop it immediately? What would you check first?
+
+**Variant B:** A service listens on 0.0.0.0 inside a container whose published port is bound to laptop loopback. Is it necessarily reachable from the Internet? Explain the missing checks.
+
+**Suggested evidence:**
+
+- `evidence/phase-01/listeners.txt`
+- `evidence/phase-01/processes.txt`
+- `evidence/phase-01/findings.md`
+
+<!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
+
+<!-- PAGEBREAK -->
+
+# Phase 2: Accounts and sudo
+
+**Why:** Limit the authority available after one account is compromised.
+
+**Goal:** Give Alice an administrative role and prove Bob does not have it.
+
+**Commands:** TP reference 2. **Practice:** about 25 minutes.
+
+### 2.1 Prediction
 
 Before testing, predict the effective UID of the administrative command for Alice and the result of Bob running the same command. State which role difference matters.
 
-### E1.2 Decision
+### 2.2 Decision
 
 Explain the role/group and sudo policy you used. Why is it useful for this lab, and why might it be too broad for a real log reader?
 
-### E1.3 Evidence
+### 2.3 Evidence
 
-Provide a baseline listener observation, both account identities, the relevant sudoers fragment, its syntax-check result, and Alice's successful and Bob's refused tests. Record execution context and exit status.
+Provide both account identities, the sudoers fragment and syntax-check result, plus Alice's successful and Bob's refused tests. Record context and exit status.
 
-### E1.4 Interpretation
+### 2.4 Interpretation
 
 Explain why Bob can know the correct password and still fail. Does locking root's password remove Alice's delegated administration? Discuss one mismatch or limitation in your results.
 
-### E1.5 Changed-condition scenario
+### 2.5 Changed-condition scenario
 
-Answer only your teacher's assigned variant.
+Answer your teacher's assigned variant.
 
 **Variant A:** An auditor only needs to read selected application logs. Would you add them to admin? Propose a smaller change, an allowed test and a refused test.
 
 **Variant B:** You remove Alice from the admin group, but an existing session still has old group credentials. Explain how you would verify revocation and deal with already-running access.
 
-**Suggested evidence files** (rename if your report links are consistent):
+**Suggested evidence:**
 
-- `evidence/E1/identities-and-baseline.txt`
-- `evidence/E1/sudoers.txt`
-- `evidence/E1/sudo-tests.txt`
-
-<!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
-
-<!-- PAGEBREAK -->
-
-# E2: Permissions and a deliberate SUID path
-
-**Goal:** Demonstrate the deliberately vulnerable SUID path, remove its cause, and repeat the same test as the same ordinary account.
-
-TP sections **4**. Student work: about **40 minutes**.
-
-### E2.1 Prediction
-
-Predict the effective UID when student runs the lab's shroot command before and after your proposed fix. Why would a root-run test fail to demonstrate this difference?
-
-### E2.2 Decision
-
-Justify the files and directory permissions you change. Explain why you do not remove SUID indiscriminately from every system tool.
-
-### E2.3 Evidence
-
-Attach the relevant inventory and ownership/modes, plus the exact same ordinary-user test before and after the change. Identify the tested process's effective UID.
-
-### E2.4 Interpretation
-
-What precisely did the fix prevent? The student account still has sudo for setup: how does that limit your conclusion?
-
-### E2.5 Changed-condition scenario
-
-Answer only your teacher's assigned variant.
-
-**Variant A:** Your scan also finds the legitimate sudo binary with SUID. Should you remove that bit too? State the information and tests needed before deciding.
-
-**Variant B:** The SUID bits are removed, but the tools directory remains writable by everyone. What risk remains, and under what additional condition could it become privilege escalation?
-
-**Suggested evidence files** (rename if your report links are consistent):
-
-- `evidence/E2/suid-inventory.txt`
-- `evidence/E2/modes-before-after.txt`
-- `evidence/E2/same-user-tests.txt`
+- `evidence/phase-02/identities-and-baseline.txt`
+- `evidence/phase-02/sudoers.txt`
+- `evidence/phase-02/sudo-tests.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
 
 <!-- PAGEBREAK -->
 
-# E3: Creation defaults and inherited ACLs
+# Phase 3: PAM: Pluggable Authentication Modules
 
-**Goal:** Predict creation modes, then let Alice write a project report while Bob can read but cannot modify it.
+**Why:** Services need a consistent way to combine credential, account and session policy.
 
-TP sections **5**. Student work: about **30 minutes**.
+**Goal:** Observe password success, repeated failures, lockout and recovery.
 
-### E3.1 Prediction
+**Commands:** TP reference 3: server-fingerprint through reset-lock. **Practice:** about 25 minutes.
 
-Predict a regular file and directory created with requested modes 0666 and 0777 under umask 027, before a default ACL is introduced. Explain the operation in words.
+### 3.1 Prediction
 
-### E3.2 Decision
+Predict a correct password before failures and after five failed attempts. What state changed?
 
-Explain the project group, SGID directory bit, auditor ACL, default ACL and mask. Which mechanism applies to existing objects and which affects future creation?
+### 3.2 Decision
 
-### E3.3 Evidence
+Explain the PAM stack and the deny/unlock_time policy. What do preauth, authfail and the account call do in this lab?
 
-Attach creation modes and getfacl output for the directory and a new report. Show Alice creating content, Bob reading it, and Bob's refused modification in their own contexts.
+### 3.3 Evidence
 
-### E3.4 Interpretation
+Save the relevant PAM files and threshold configuration, initial successful login, failure counter, refused correct-password attempt and reset evidence.
 
-Explain why Bob's read and write attempts differ and why the new regular file is not executable. Identify one way an existing object could differ from a newly created one.
+### 3.4 Interpretation
 
-### E3.5 Changed-condition scenario
+Why does a valid password not guarantee access? Explain one benefit and one risk of account lockout.
 
-Answer only your teacher's assigned variant.
+### 3.5 Changed-condition scenario
 
-**Variant A:** An administrator runs chmod g-r on a file with an extended ACL. Bob's named/group entry still appears to include read permission, yet reading fails. What would you inspect and why?
+Answer your teacher's assigned variant.
 
-**Variant B:** A new reviewer should read future reports but never modify them. How would you test both the role assignment and inheritance, including an already-existing report?
+**Variant A:** An attacker deliberately locks a legitimate administrator out. What would you investigate or change without simply removing all controls?
 
-**Suggested evidence files** (rename if your report links are consistent):
+**Variant B:** A rule with sufficient is placed before the lockout check. Why must you inspect the whole stack?
 
-- `evidence/E3/creation-modes.txt`
-- `evidence/E3/project-acls.txt`
-- `evidence/E3/alice-bob-access.txt`
+**Suggested evidence:**
+
+- `evidence/phase-03/pam-policy.txt`
+- `evidence/phase-03/lockout-tests.txt`
+- `evidence/phase-03/counter-and-recovery.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
 
 <!-- PAGEBREAK -->
 
-# E4: Password failures and SSH key access
+# Phase 4: SSH: keys over passwords
 
-**Goal:** Observe lockout and recovery, establish host trust, then verify key-only access for an authorized account.
+**Why:** Remove password guessing as an SSH login path and verify the remote server.
 
-TP sections **3**. Student work: about **45 minutes**.
+**Goal:** Verify key-only access for the authorized account.
 
-### E4.1 Prediction
+**Commands:** TP reference 3: install-keys through unauthorized-group-refused. **Practice:** about 30 minutes.
 
-Predict the result of a correct password after five failed attempts, and then the outcomes of Alice's key, a password attempt and student's valid key after the SSH policy change.
+### 4.1 Prediction
 
-### E4.2 Decision
+After the policy change, predict Alice's key, a password attempt and student's enrolled key.
 
-Explain the order of your changes and recovery route. Distinguish known_hosts, authorized_keys, SSH key verification and PAM account checks.
+### 4.2 Decision
 
-### E4.3 Evidence
+Explain key installation, host verification and safe change order. Distinguish known_hosts from authorized_keys.
 
-Provide lock-counter/recovery evidence, matching public fingerprints, relevant effective sshd settings, and all three final login outcomes. Never attach the private key or passwords.
+### 4.3 Evidence
 
-### E4.4 Interpretation
+Provide public fingerprints, relevant effective sshd settings, and all three final login results. Exclude private keys and passwords.
 
-Explain the reason for each refusal and how logs support it. Why can a valid key still fail? Why is copying the client-container key path into a laptop command insufficient?
+### 4.4 Interpretation
 
-### E4.5 Changed-condition scenario
+Explain each refusal. Why can a valid key fail, and why does changing a password not revoke a stolen SSH key?
 
-Answer only your teacher's assigned variant.
+### 4.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
 
 **Variant A:** Alice's enrolled private key is stolen. Would changing her password solve the problem? Propose credential revocation, evidence to inspect and one verification test.
 
 **Variant B:** The key works for an admin account but not for another account with the same public key installed. Which authorization conditions and filesystem details would you verify before weakening SSH policy?
 
-**Suggested evidence files** (rename if your report links are consistent):
+**Suggested evidence:**
 
-- `evidence/E4/lockout-and-recovery.txt`
-- `evidence/E4/public-fingerprints-and-settings.txt`
-- `evidence/E4/ssh-outcomes-redacted.txt`
+- `evidence/phase-04/public-fingerprints-and-settings.txt`
+- `evidence/phase-04/ssh-policy.txt`
+- `evidence/phase-04/ssh-outcomes-redacted.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
 
 <!-- PAGEBREAK -->
 
-# E5: Source policy and stateful filtering
+# Phase 5: SUID and SGID
 
-**Goal:** Isolate the SSH source decision, then test the firewall, its persistence and a dependency it must preserve.
+**Why:** Privileged executables can turn a local flaw into wider authority.
 
-TP sections **7**. Student work: about **45 minutes**.
+**Goal:** Inventory privileged files and close the deliberate SUID path.
 
-### E5.1 Prediction
+**Commands:** TP reference 4. **Practice:** about 30 minutes.
 
-Predict what a second client with the same valid lab key can do before and after the source allowlist. Then predict HTTP access from the approved and new client after the firewall is applied.
+### 5.1 Prediction
 
-### E5.2 Decision
+Predict the effective UID when student runs the lab's shroot command before and after your proposed fix. Why would a root-run test fail to demonstrate this difference?
 
-Explain the distinction between sshd authorization and packet filtering, rule order, and why you use nft-lab rather than flushing the whole ruleset.
+### 5.2 Decision
 
-### E5.3 Evidence
+Justify the files and directory permissions you change. Explain why you do not remove SUID indiscriminately from every system tool.
 
-Provide the same-key/different-source SSH test, the two-client HTTP tests, relevant rules/counters, and post-restart policy, SSH and DNS checks. Identify any manually started service that stopped.
+### 5.3 Evidence
 
-### E5.4 Interpretation
+Attach the relevant inventory and ownership/modes, plus the exact same ordinary-user test before and after the change. Identify the tested process's effective UID.
 
-Explain which layer caused each refusal. Why might an existing connection behave differently from a fresh one? What does the restart test prove and not prove?
+### 5.4 Interpretation
 
-### E5.5 Changed-condition scenario
+What precisely did the fix prevent? The student account still has sudo for setup: how does that limit your conclusion?
 
-Answer only your teacher's assigned variant.
+### 5.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
+
+**Variant A:** Your scan also finds the legitimate sudo binary with SUID. Should you remove that bit too? State the information and tests needed before deciding.
+
+**Variant B:** The SUID bits are removed, but the tools directory remains writable by everyone. What risk remains, and under what additional condition could it become privilege escalation?
+
+**Suggested evidence:**
+
+- `evidence/phase-05/suid-inventory.txt`
+- `evidence/phase-05/modes-before-after.txt`
+- `evidence/phase-05/same-user-tests.txt`
+
+<!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
+
+<!-- PAGEBREAK -->
+
+# Phase 6: umask: default permissions
+
+**Why:** New files should not expose more access than their purpose requires.
+
+**Goal:** Predict and verify creation modes before introducing default ACLs.
+
+**Commands:** TP reference 5: umask block. **Practice:** about 15 minutes.
+
+### 6.1 Prediction
+
+Predict new regular-file and directory modes under umask 027, with requested modes 0666 and 0777 and no default ACL.
+
+### 6.2 Decision
+
+Explain why you set the mask in the tested shell, and what a login-default change would affect.
+
+### 6.3 Evidence
+
+Attach the current mask, creation commands and modes of the fresh file and directory, with context.
+
+### 6.4 Interpretation
+
+Explain the observed permissions and a collaboration case where 027 is unsuitable.
+
+### 6.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
+
+**Variant A:** A file already exists with mode 0666 when you run umask 027. What do you expect and how would you correct it?
+
+**Variant B:** A long-running service still creates broadly accessible files after a login-default edit. What would you inspect?
+
+**Suggested evidence:**
+
+- `evidence/phase-06/creation-modes.txt`
+
+<!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
+
+<!-- PAGEBREAK -->
+
+# Phase 7: ACL: Access Control Lists
+
+**Why:** Represent a read-only auditor alongside a writing project role.
+
+**Goal:** Make Alice's new report readable but not writable by Bob.
+
+**Commands:** TP reference 5: acl-setup through acl-bob-write-refused. **Practice:** about 25 minutes.
+
+### 7.1 Prediction
+
+Before testing, predict Alice's creation of a report, Bob's read and Bob's modification. What should be inherited?
+
+### 7.2 Decision
+
+Explain the project group, SGID directory bit, auditor ACL, default ACL and mask. Which mechanism applies to existing objects and which affects future creation?
+
+### 7.3 Evidence
+
+Attach creation modes and getfacl output for the directory and a new report. Show Alice creating content, Bob reading it, and Bob's refused modification in their own contexts.
+
+### 7.4 Interpretation
+
+Explain why Bob's read and write attempts differ and why the new regular file is not executable. Identify one way an existing object could differ from a newly created one.
+
+### 7.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
+
+**Variant A:** An administrator runs chmod g-r on a file with an extended ACL. Bob's named/group entry still appears to include read permission, yet reading fails. What would you inspect and why?
+
+**Variant B:** A new reviewer should read future reports but never modify them. How would you test both the role assignment and inheritance, including an already-existing report?
+
+**Suggested evidence:**
+
+- `evidence/phase-07/project-acls.txt`
+- `evidence/phase-07/alice-bob-access.txt`
+
+<!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
+
+<!-- PAGEBREAK -->
+
+# Phase 8: fstab and mount options
+
+**Why:** Restrict particular execution and device/privilege behavior on writable filesystems.
+
+**Goal:** Demonstrate noexec, its interpreter limitation and policy restoration.
+
+**Commands:** TP reference 6. **Practice:** about 25 minutes.
+
+### 8.1 Prediction
+
+Predict direct execution of the binary/script on noexec /tmp and explicit interpreter execution.
+
+### 8.2 Decision
+
+Explain the chosen mount flags, temporary exception and restoration. Why does this lab not verify fstab boot policy?
+
+### 8.3 Evidence
+
+Provide effective mount options, direct/interpreter outcomes, the temporary exec result and restored noexec refusal.
+
+### 8.4 Interpretation
+
+What risk did noexec reduce, and what remains possible? Why not bind /var/tmp to volatile /tmp blindly?
+
+### 8.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
+
+**Variant A:** An installer requires executable temporary files. Propose a bounded exception and a verification step.
+
+**Variant B:** A script runs through bash despite noexec. Is that alone a bypass of a promise made by the flag?
+
+**Suggested evidence:**
+
+- `evidence/phase-08/mount-options.txt`
+- `evidence/phase-08/mount-tests.txt`
+
+<!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
+
+<!-- PAGEBREAK -->
+
+# Phase 9: Remote access restrictions
+
+**Why:** A valid credential should only work within the intended source/account policy.
+
+**Goal:** Isolate source authorization before adding packet filtering.
+
+**Commands:** TP reference 7: source-policy through ssh-other-source-refused. **Practice:** about 20 minutes.
+
+### 9.1 Prediction
+
+Predict the new-source test using the same valid lab key after the account/source allowlist.
+
+### 9.2 Decision
+
+Explain the explicit allowlist and why a Match Address block alone does not deny all other sources.
+
+### 9.3 Evidence
+
+Attach the allowlist, both source identities and the same-key/different-source SSH result before the firewall is applied.
+
+### 9.4 Interpretation
+
+Which layer refused the attempt? What can change when the approved container is recreated?
+
+### 9.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
+
+**Variant A:** The approved client is recreated and receives a different IP. Access stops. How do you diagnose and repair the smallest relevant policy while retaining the deny-by-default intent?
+
+**Variant B:** The correct key is installed for two accounts, but only one is allowed by group policy. Would you remove AllowGroups to make both work? Explain your diagnosis and decision.
+
+**Suggested evidence:**
+
+- `evidence/phase-09/ssh-source-policy.txt`
+- `evidence/phase-09/source-tests.txt`
+
+<!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
+
+<!-- PAGEBREAK -->
+
+# Phase 10: Host firewall with nftables
+
+**Why:** Keep network exposure aligned with the services and clients the host needs.
+
+**Goal:** Prove source-specific filtering, persistence and required DNS behavior.
+
+**Commands:** TP reference 7: firewall through ssh-after-restart. **Practice:** about 35 minutes.
+
+### 10.1 Prediction
+
+Predict SSH/HTTP from the approved client and HTTP from a new source after filtering.
+
+### 10.2 Decision
+
+Explain rule order, connection state, source scope and why the lab replaces only its own table.
+
+### 10.3 Evidence
+
+Attach rules/counters, both client HTTP results, and post-restart policy, SSH and DNS checks.
+
+### 10.4 Interpretation
+
+What does the restart test prove, and how would you distinguish a missing listener from packet filtering?
+
+### 10.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
 
 **Variant A:** The approved client is recreated and receives a different IP. Access stops. How do you diagnose and repair the smallest relevant policy while retaining the deny-by-default intent?
 
 **Variant B:** The service must support approved IPv6 clients. Does the existing ip saddr rule permit them? Explain what policy and tests would be needed, including necessary IPv6 control traffic.
 
-**Suggested evidence files** (rename if your report links are consistent):
+**Suggested evidence:**
 
-- `evidence/E5/source-and-client-tests.txt`
-- `evidence/E5/firewall-and-counters.txt`
-- `evidence/E5/restart-and-dns.txt`
+- `evidence/phase-10/firewall-and-counters.txt`
+- `evidence/phase-10/client-tests.txt`
+- `evidence/phase-10/restart-and-dns.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
 
 <!-- PAGEBREAK -->
 
-# E6: Log events and temporary bans
+# Phase 11: Rate limits, connection caps and Fail2ban
 
-**Goal:** Count one application event once, observe the threshold, prove enforcement, and recover normal access.
+**Why:** Constrain excessive activity without confusing an event threshold with malicious intent.
 
-TP sections **8**. Student work: about **40 minutes**.
+**Goal:** Compare rate and concurrency, then prove a log-driven ban and recovery.
 
-### E6.1 Prediction
+**Commands:** TP reference 11A: EXTENSIONS-2026.md; 11B: reference section 8. **Practice:** about 60 minutes.
 
-Predict normal access after five distinct 404 requests and after the sixth within the configured window. Why might counting both Python log lines produce an earlier ban?
+### 11.1 Prediction
 
-### E6.2 Decision
+Predict a third simultaneous SSH connection under the cap, a third quick HTTP request under the meter, and access after five/six counted 404 events.
 
-Explain which line your filter counts, why the backend fits the environment, and the purpose of each threshold/window value.
+### 11.2 Decision
 
-### E6.3 Evidence
+Explain what each control counts, rule order, the matched log line and the jail thresholds.
 
-Attach filter-count evidence, the not-banned and banned states, a blocked request and the successful request after unban. Link each result to the same source address.
+### 11.3 Evidence
 
-### E6.4 Interpretation
+Attach 11A allowed/refused tests and counters; then 11B filter counts, fifth/sixth-event states, a blocked request and successful recovery.
 
-Does a ban prove that the client was malicious? Explain a plausible false positive and how you would observe it before changing the detector.
+### 11.4 Interpretation
 
-### E6.5 Changed-condition scenario
+Explain one false-positive risk and one limit of your measurement. Does a ban establish intent?
 
-Answer only your teacher's assigned variant.
+### 11.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
 
 **Variant A:** Forty legitimate users share one public NAT address. Propose a safer detection/enforcement experiment and identify a metric for collateral damage.
 
 **Variant B:** The log format changes after an application upgrade and the filter matches no events. Does the empty ban list prove attacks stopped? Propose a test that would expose the problem.
 
-**Suggested evidence files** (rename if your report links are consistent):
+**Suggested evidence:**
 
-- `evidence/E6/filter-and-event-counts.txt`
-- `evidence/E6/ban-states.txt`
-- `evidence/E6/blocked-and-recovered.txt`
+- `evidence/phase-11/cap-and-meter-tests.txt`
+- `evidence/phase-11/filter-and-event-counts.txt`
+- `evidence/phase-11/ban-and-recovery.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
 
 <!-- PAGEBREAK -->
 
-# E7: Mount restrictions and a limited service identity
+# Phase 12: Updates and baseline hygiene
 
-**Goal:** Measure noexec's effect and limitation, then inspect a chrooted service's paths and actual credentials.
+**Why:** Reduce exposure to known flaws while verifying operational continuity.
 
-TP sections **6 and 10**. Student work: about **45 minutes**.
+**Goal:** Inspect actual update policy/actions and preserve maintenance evidence.
 
-### E7.1 Prediction
+**Commands:** TP reference 9. **Practice:** about 25 minutes.
 
-Predict direct execution of the binary/script on noexec /tmp and explicit interpreter execution. Predict the path visible inside chroot for a file stored under /srv/jail/www outside.
+### 12.1 Prediction
 
-### E7.2 Decision
+What do you expect a strict metadata refresh and a dry run to establish? Could no available updates be a valid outcome?
 
-Explain why you combine mount policy, a changed filesystem root, a separate service UID and root-owned static content. What does each contribute?
+### 12.2 Decision
 
-### E7.3 Evidence
+Explain trusted origins, the selected update policy and your restart/recovery considerations.
 
-Provide effective mount options, direct/interpreter outcomes, restored noexec refusal, the HTTP response, actual service PID/UID and inside/outside path checks.
+### 12.3 Evidence
 
-### E7.4 Interpretation
+Attach effective policy, dry-run/actual output, relevant package history and reboot/restart observations.
 
-Why is a missing /etc inside this small jail expected? Does successful HTTP mean the service is safely isolated? State two boundaries this experiment does not provide.
+### 12.4 Interpretation
 
-### E7.5 Changed-condition scenario
+What can the container prove about package maintenance, and what needs a VM/host check?
 
-Answer only your teacher's assigned variant.
+### 12.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
+
+**Variant A:** A package update succeeds but the service still runs old code. What would you verify next?
+
+**Variant B:** A fragile application has a package on hold. What should a documented exception contain?
+
+**Suggested evidence:**
+
+- `evidence/phase-12/update-policy.txt`
+- `evidence/phase-12/update-actions-and-history.txt`
+
+<!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
+
+<!-- PAGEBREAK -->
+
+# Phase 13: Chroot
+
+**Why:** Narrow a service's filesystem view and run it with limited ordinary authority.
+
+**Goal:** Observe the same service from inside and outside its jail.
+
+**Commands:** TP reference 10. **Practice:** about 35 minutes.
+
+### 13.1 Prediction
+
+Predict the inside path for /srv/jail/www and whether the prepared jail contains the target's /etc.
+
+### 13.2 Decision
+
+Explain the minimal static binary, dedicated UID and root-owned executable/static content.
+
+### 13.3 Evidence
+
+Provide the HTTP result, actual service PID/UID and inside/outside path observations.
+
+### 13.4 Interpretation
+
+State a benefit and two boundaries chroot does not provide.
+
+### 13.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
 
 **Variant A:** The jailed service now accepts uploads. Would you make its executable and whole web tree writable by the service account? Propose a smaller writable area and tests.
 
 **Variant B:** A teammate says chroot prevents the service from reaching an external address. Explain why that conclusion does not follow and which separate control you would investigate.
 
-**Suggested evidence files** (rename if your report links are consistent):
+**Suggested evidence:**
 
-- `evidence/E7/mount-tests.txt`
-- `evidence/E7/service-response-and-identity.txt`
-- `evidence/E7/jail-paths.txt`
+- `evidence/phase-13/service-response-and-identity.txt`
+- `evidence/phase-13/jail-paths.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
 
 <!-- PAGEBREAK -->
 
-# E8: Updates and reviewed integrity changes
+# Phase 14: AIDE: file integrity monitoring
 
-**Goal:** Inspect update policy and compare a trusted AIDE baseline with a controlled change before deciding whether to accept it.
+**Why:** Detect meaningful file changes and investigate them before accepting a new state.
 
-TP sections **9 and 11**. Student work: about **45 minutes**.
+**Goal:** Compare a protected baseline, controlled change and reviewed new baseline.
 
-### E8.1 Prediction
+**Commands:** TP reference 11. **Practice:** about 30 minutes.
 
-Predict the AIDE result before and after the controlled /etc/hosts change. What can a dry run establish about update policy, and what can it not establish about automatic scheduling?
+### 14.1 Prediction
 
-### E8.2 Decision
+Predict the initial comparison and the result after the controlled /etc/hosts change.
 
-Explain the security origin policy, monitored scope, exact exclusions and reason for reviewing a difference before accepting a new baseline.
+### 14.2 Decision
 
-### E8.3 Evidence
+Explain monitored properties, scope, exclusions and why review precedes accepting a baseline.
 
-Attach effective update policy/dry-run evidence and the clean, changed and reviewed-clean AIDE outcomes. Include the relevant diff and decision; do not invent installed updates if none were available.
+### 14.3 Evidence
 
-### E8.4 Interpretation
+Attach clean, changed and reviewed-clean outputs plus the actual diff and acceptance decision.
 
-Explain why a clean integrity report does not prove absence of compromise. How do the baseline's trust and monitored scope limit the conclusion?
+### 14.4 Interpretation
 
-### E8.5 Changed-condition scenario
+Why does a clean result not prove absence of compromise?
 
-Answer only your teacher's assigned variant.
+### 14.5 Changed-condition scenario
+
+Answer your teacher's assigned variant.
 
 **Variant A:** A package update and an unexplained configuration edit occurred close together. AIDE reports a difference. What evidence would justify accepting it, and what would make you delay re-baselining?
 
 **Variant B:** The account you are investigating can also modify the AIDE database. How should that affect your confidence in a clean result and your next comparison?
 
-**Suggested evidence files** (rename if your report links are consistent):
+**Suggested evidence:**
 
-- `evidence/E8/update-policy-and-actions.txt`
-- `evidence/E8/aide-comparisons.txt`
-- `evidence/E8/reviewed-diff.txt`
+- `evidence/phase-14/aide-comparisons.txt`
+- `evidence/phase-14/reviewed-diff.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
 
 <!-- PAGEBREAK -->
 
-# E9: Inventory and an evidence-based investigation
+# Phase 15: osquery
 
-**Goal:** Use osquery to connect listeners to processes, then explain one actual finding and a counter-check that limits your claim.
+**Why:** Make the initial audit repeatable and connect separate observations through structured queries.
 
-TP sections **12**. Student work: about **40 minutes**.
+**Goal:** Investigate listeners, privileged files and process state after the earlier controls.
 
-### E9.1 Prediction
+**Commands:** TP reference 12. **Practice:** about 35 minutes.
+
+### 15.1 Prediction
 
 Before querying, name one listener/process relationship you expect to find and one reason a session or inventory table might be empty without proving absence of activity.
 
-### E9.2 Decision
+### 15.2 Decision
 
 Explain your join/filter and file constraints. Why do you inspect the installed schema and avoid ordinary numeric bit operations on the file table's octal mode text?
 
-### E9.3 Evidence
+### 15.3 Evidence
 
-Attach the exact queries, JSON output, installed version/schema evidence and a comparison with ss/ps or find. For one finding, record a counter-check that could change your initial interpretation.
+Attach exact queries, JSON output and version/schema evidence for the inventory, SUID/SGID, root-owned listeners and top ten resident-memory processes. Corroborate one finding with ss/ps or find.
 
-### E9.4 Interpretation
+### 15.4 Interpretation
 
-Select one actual finding. Explain what you can conclude, one alternative explanation, a justified next action and a limitation of the container observation.
+Select one actual finding and compare it with the earlier baseline. Explain an alternative interpretation, a justified next action and a scope/timing limitation.
 
-### E9.5 Changed-condition scenario
+### 15.5 Changed-condition scenario
 
-Answer only your teacher's assigned variant.
+Answer your teacher's assigned variant.
 
 **Variant A:** Your query finds the SSH listener owned by root. Is that enough to recommend shutting it down? Explain the missing context and a safer decision process.
 
 **Variant B:** An unexpected root-owned Python HTTP listener appears. Propose the first evidence to collect, one legitimate explanation and a change you would test if the service only needs to serve static files.
 
-**Suggested evidence files** (rename if your report links are consistent):
+**Suggested evidence:**
 
-- `evidence/E9/queries-and-version.txt`
-- `evidence/E9/inventory.json`
-- `evidence/E9/corroboration.txt`
+- `evidence/phase-15/queries-and-version.txt`
+- `evidence/phase-15/inventory.json`
+- `evidence/phase-15/corroboration.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->

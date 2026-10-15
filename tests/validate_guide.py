@@ -22,7 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--project', default='cpe-guide-validation')
     parser.add_argument('--port', type=int, default=22223)
-    parser.add_argument('--order', choices=['teaching', 'reference'], default='teaching')
+    parser.add_argument('--order', choices=['teaching', 'reference', 'legacy'], default='teaching')
     parser.add_argument('--extensions', action='store_true')
     parser.add_argument('--keep', action='store_true', help='Keep this disposable project for inspection')
     args = parser.parse_args()
@@ -53,10 +53,11 @@ def main():
     guide = (ROOT / 'docs/TP-2026.md').read_text()
     sections = re.split(r'^## (\d+)\.[^\n]*\n', guide, flags=re.M)
     indexed = {int(sections[i]): sections[i + 1] for i in range(1, len(sections), 2)}
-    order = [1, 2, 4, 5, 3, 7, 8, 6, 10, 9, 11, 12] if args.order == 'teaching' else sorted(indexed)
-    content = '\n'.join(indexed[n] for n in order)
+    order = [1, 2, 4, 5, 3, 7, 8, 6, 10, 9, 11, 12] if args.order == 'legacy' else sorted(indexed)
     extension = (ROOT / 'docs/EXTENSIONS-2026.md').read_text() if args.extensions else ''
-    content += '\n' + extension
+    content = '\n'.join(indexed[n] + ('\n' + extension if n == 7 and args.order != 'legacy' else '') for n in order)
+    if args.order == 'legacy':
+        content += '\n' + extension
     blocks = re.findall(r'```bash\n(.*?)\n```', content, re.S)
     labels = set()
     for block in blocks:
@@ -66,7 +67,7 @@ def main():
         labels.add(marker[2])
         run(['bash', '-n'], input='\n'.join(block.splitlines()[1:]), check=True)
     rows = []
-    manifest = {'order': order, 'guide_sha256': hashlib.sha256(guide.encode()).hexdigest(),
+    manifest = {'order': order, 'extension_placement': ('after-all-core' if args.order == 'legacy' else 'after-section-7-before-8') if extension else None, 'guide_sha256': hashlib.sha256(guide.encode()).hexdigest(),
         'extensions_sha256': hashlib.sha256(extension.encode()).hexdigest() if extension else None,
         'architecture': output(['uname', '-m']), 'checks': rows}
     try:

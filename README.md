@@ -2,13 +2,15 @@
 
 Disposable Ubuntu 24.04 target and Debian 12 client for the CPE Linux security course.
 
-- [Student exercises E1–E9](docs/EXERCISES.md)
+- [Student exercises in original Phases 0–15](docs/EXERCISES.md)
 - [Markdown report template](docs/REPORT-TEMPLATE.md) and [submission instructions](docs/SUBMISSION.md)
 - [Corrected practical command reference](docs/TP-2026.md)
-- [Optional rate and concurrency practical](docs/EXTENSIONS-2026.md)
+- [Phase 11A rate and concurrency practical](docs/EXTENSIONS-2026.md)
 - [Changes and validation](docs/CHANGES-2026.md)
 
-Each cycle uses about **20 minutes of explanation**, **30–45 minutes of practice** and **5 minutes of review**. Part 1 (E1–E3) follows guide sections **1, 2, 4, 5**; part 2 (E4–E6) follows **3, 7, 8**; part 3 (E7–E9) follows **6, 10, 9, 11, 12**. Keep the same containers through the sequence. There are no assigned teaching days or fixed clock times. The full core sequence takes about 10 hours before setup and breaks; spread it over the available teaching blocks.
+The original course order is preserved: **Phase 0 setup and deliverables; Phase 1 threat surface; then Phases 2–15 in order**. Explain the concepts for about 15–20 minutes, let students complete that phase's TP, then review their evidence. Phase 11 has two such cycles. The command guide maps every phase to its blocks, including stopping points inside combined reference sections.
+
+Start by showing [the worked Phase 1 report](docs/REPORT-EXAMPLE.md). It explains what students should look for and how to connect an observation to a justified decision. The audit records the starting state; it does not require arbitrary changes. The complete sequence needs roughly 13–14 hours plus breaks at the suggested pace; assign the phases that fit your available teaching time.
 
 ## Start
 
@@ -58,6 +60,6 @@ The root Dockerfile/start.sh are authoritative. Copies under `host/` remain for 
 
 ## Validate the practical
 
-After building the images, run `python3 tests/validate_guide.py --extensions`. The validator creates its own disposable Compose project, executes the guide's exact marked commands in teaching order, checks expected refusals, and removes only that project. It refuses to reuse an existing project. Use `--order reference` to follow document order instead. Results, command output and a guide hash are saved under the ignored `artifacts/validation/` directory. Use `--keep` only to inspect a failed disposable run. Docker Engine, Compose and Python 3 are required.
+After building the images, run `python3 tests/validate_guide.py --extensions`. The validator creates its own disposable Compose project, executes the guide's exact marked commands in teaching order, checks expected refusals, and removes only that project. It refuses to reuse an existing project. The default and `--order reference` follow original phase order, inserting Phase 11A after guide section 7 and before section 8. `--order legacy` reproduces the superseded reordered edition. Results, command output and a guide hash are saved under the ignored `artifacts/validation/` directory. Use `--keep` only to inspect a failed disposable run. Docker Engine, Compose and Python 3 are required.
 
 The update exercise changes packages inside the disposable target. It needs repository access; the osquery installation also needs GitHub release access. Set `--port` if the default validation port 22223 is occupied.

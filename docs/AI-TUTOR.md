@@ -1,6 +1,6 @@
 # Ask for help as a learner
 
-Copy this prompt, then add the exercise ID, your prediction, your attempted command, execution context and observed output. Remove secrets first.
+Copy this prompt, then add the phase number and question ID, your prediction, your attempted command, execution context and observed output. Remove secrets first.
 
 ```text
 Help me understand this Linux security exercise as a tutor.

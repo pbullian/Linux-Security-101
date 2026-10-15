@@ -1,357 +1,599 @@
 # Linux security practical report
 
 - Student ID: <your ID>
-- Assignment: <teacher's assignment reference>
-- Assigned exercises: <teacher's list>
-- Scenario variants: <teacher's E1=A, E2=B, ...>
-- Lab platform and versions: <OS/architecture, Docker, relevant tool versions>
+- Assignment: <teacher's reference>
+- Assigned phases: <teacher's list>
+- Scenario variants: <teacher's phase-to-A/B assignments>
+- Platform and versions: <OS, architecture, Docker and relevant tools>
 - Collaborators, if permitted: <names or none>
 
-Keep only the assigned exercise sections. Answer under each stable question ID. Aim for about 150–250 words per exercise, excluding tables and raw output; concise complete answers are welcome. Replace placeholders and use relative evidence links. A result that differs from your prediction is useful when explained honestly.
+Read REPORT-EXAMPLE.md first. Keep only assigned phases. Use your own observations and relative evidence links. A concise paragraph or two plus the evidence table is enough for most phases, approximately 100–200 words excluding raw output. Keep the initial prediction separate from later corrections.
 
+## Phase 0: setup checklist
 
-## E1: Accounts and delegated administration
+- [ ] Both containers run and I can identify the target/client/laptop contexts.
+- [ ] I know when to use root and when a test must run as Alice, Bob or student.
+- [ ] I checked the tools, target name resolution and relevant port mapping.
+- [ ] I saved a small file under /artifacts and found it on the laptop.
+- [ ] I know the recovery console and the difference between restart and recreation.
+- [ ] I read the worked report example and know the assigned phases/scenarios.
+
+Record platform details and any setup problem. Phase 0 is a readiness check, not a scored hardening result.
+
+## Phase 1: Understanding the threat surface
 
 Assigned scenario: <A or B>
 
-### E1.1 Prediction
+### 1.1 Prediction
+
+Before running commands, name one required service you expect and one threat-surface question you want to investigate.
+
+<Your answer>
+
+### 1.2 Decision
+
+Choose two meaningful observations. For each, state its purpose and a keep, restrict or investigate recommendation with a reason. Do not change configuration in this phase.
+
+<Your answer>
+
+### 1.3 Evidence
+
+Attach listener and process output. In a small findings table, identify the address/port or process, execution context, evidence path and question raised.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
+|---|---|---|---|---|---|
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-01/listeners.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
+
+### 1.4 Interpretation
+
+Explain one plausible risk, the assumption behind it and one next test. What does this inventory fail to establish?
+
+<Your answer>
+
+### 1.5 Changed-condition scenario
+
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
+
+
+## Phase 2: Accounts and sudo
+
+Assigned scenario: <A or B>
+
+### 2.1 Prediction
 
 Before testing, predict the effective UID of the administrative command for Alice and the result of Bob running the same command. State which role difference matters.
 
 <Your answer>
 
-### E1.2 Decision
+### 2.2 Decision
 
 Explain the role/group and sudo policy you used. Why is it useful for this lab, and why might it be too broad for a real log reader?
 
 <Your answer>
 
-### E1.3 Evidence
+### 2.3 Evidence
 
-Provide a baseline listener observation, both account identities, the relevant sudoers fragment, its syntax-check result, and Alice's successful and Bob's refused tests. Record execution context and exit status.
+Provide both account identities, the sudoers fragment and syntax-check result, plus Alice's successful and Bob's refused tests. Record context and exit status.
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E1/identities-and-baseline.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-02/identities-and-baseline.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E1.4 Interpretation
+### 2.4 Interpretation
 
 Explain why Bob can know the correct password and still fail. Does locking root's password remove Alice's delegated administration? Discuss one mismatch or limitation in your results.
 
 <Your answer>
 
-### E1.5 Changed-condition scenario
+### 2.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
 
-## E2: Permissions and a deliberate SUID path
+## Phase 3: PAM: Pluggable Authentication Modules
 
 Assigned scenario: <A or B>
 
-### E2.1 Prediction
+### 3.1 Prediction
+
+Predict a correct password before failures and after five failed attempts. What state changed?
+
+<Your answer>
+
+### 3.2 Decision
+
+Explain the PAM stack and the deny/unlock_time policy. What do preauth, authfail and the account call do in this lab?
+
+<Your answer>
+
+### 3.3 Evidence
+
+Save the relevant PAM files and threshold configuration, initial successful login, failure counter, refused correct-password attempt and reset evidence.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
+|---|---|---|---|---|---|
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-03/pam-policy.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
+
+### 3.4 Interpretation
+
+Why does a valid password not guarantee access? Explain one benefit and one risk of account lockout.
+
+<Your answer>
+
+### 3.5 Changed-condition scenario
+
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
+
+
+## Phase 4: SSH: keys over passwords
+
+Assigned scenario: <A or B>
+
+### 4.1 Prediction
+
+After the policy change, predict Alice's key, a password attempt and student's enrolled key.
+
+<Your answer>
+
+### 4.2 Decision
+
+Explain key installation, host verification and safe change order. Distinguish known_hosts from authorized_keys.
+
+<Your answer>
+
+### 4.3 Evidence
+
+Provide public fingerprints, relevant effective sshd settings, and all three final login results. Exclude private keys and passwords.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
+|---|---|---|---|---|---|
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-04/public-fingerprints-and-settings.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
+
+### 4.4 Interpretation
+
+Explain each refusal. Why can a valid key fail, and why does changing a password not revoke a stolen SSH key?
+
+<Your answer>
+
+### 4.5 Changed-condition scenario
+
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
+
+
+## Phase 5: SUID and SGID
+
+Assigned scenario: <A or B>
+
+### 5.1 Prediction
 
 Predict the effective UID when student runs the lab's shroot command before and after your proposed fix. Why would a root-run test fail to demonstrate this difference?
 
 <Your answer>
 
-### E2.2 Decision
+### 5.2 Decision
 
 Justify the files and directory permissions you change. Explain why you do not remove SUID indiscriminately from every system tool.
 
 <Your answer>
 
-### E2.3 Evidence
+### 5.3 Evidence
 
 Attach the relevant inventory and ownership/modes, plus the exact same ordinary-user test before and after the change. Identify the tested process's effective UID.
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E2/suid-inventory.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-05/suid-inventory.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E2.4 Interpretation
+### 5.4 Interpretation
 
 What precisely did the fix prevent? The student account still has sudo for setup: how does that limit your conclusion?
 
 <Your answer>
 
-### E2.5 Changed-condition scenario
+### 5.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
 
-## E3: Creation defaults and inherited ACLs
+## Phase 6: umask: default permissions
 
 Assigned scenario: <A or B>
 
-### E3.1 Prediction
+### 6.1 Prediction
 
-Predict a regular file and directory created with requested modes 0666 and 0777 under umask 027, before a default ACL is introduced. Explain the operation in words.
+Predict new regular-file and directory modes under umask 027, with requested modes 0666 and 0777 and no default ACL.
 
 <Your answer>
 
-### E3.2 Decision
+### 6.2 Decision
+
+Explain why you set the mask in the tested shell, and what a login-default change would affect.
+
+<Your answer>
+
+### 6.3 Evidence
+
+Attach the current mask, creation commands and modes of the fresh file and directory, with context.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
+|---|---|---|---|---|---|
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-06/creation-modes.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
+
+### 6.4 Interpretation
+
+Explain the observed permissions and a collaboration case where 027 is unsuitable.
+
+<Your answer>
+
+### 6.5 Changed-condition scenario
+
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
+
+
+## Phase 7: ACL: Access Control Lists
+
+Assigned scenario: <A or B>
+
+### 7.1 Prediction
+
+Before testing, predict Alice's creation of a report, Bob's read and Bob's modification. What should be inherited?
+
+<Your answer>
+
+### 7.2 Decision
 
 Explain the project group, SGID directory bit, auditor ACL, default ACL and mask. Which mechanism applies to existing objects and which affects future creation?
 
 <Your answer>
 
-### E3.3 Evidence
+### 7.3 Evidence
 
 Attach creation modes and getfacl output for the directory and a new report. Show Alice creating content, Bob reading it, and Bob's refused modification in their own contexts.
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E3/creation-modes.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-07/project-acls.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E3.4 Interpretation
+### 7.4 Interpretation
 
 Explain why Bob's read and write attempts differ and why the new regular file is not executable. Identify one way an existing object could differ from a newly created one.
 
 <Your answer>
 
-### E3.5 Changed-condition scenario
+### 7.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
 
-## E4: Password failures and SSH key access
+## Phase 8: fstab and mount options
 
 Assigned scenario: <A or B>
 
-### E4.1 Prediction
+### 8.1 Prediction
 
-Predict the result of a correct password after five failed attempts, and then the outcomes of Alice's key, a password attempt and student's valid key after the SSH policy change.
-
-<Your answer>
-
-### E4.2 Decision
-
-Explain the order of your changes and recovery route. Distinguish known_hosts, authorized_keys, SSH key verification and PAM account checks.
+Predict direct execution of the binary/script on noexec /tmp and explicit interpreter execution.
 
 <Your answer>
 
-### E4.3 Evidence
+### 8.2 Decision
 
-Provide lock-counter/recovery evidence, matching public fingerprints, relevant effective sshd settings, and all three final login outcomes. Never attach the private key or passwords.
+Explain the chosen mount flags, temporary exception and restoration. Why does this lab not verify fstab boot policy?
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+### 8.3 Evidence
+
+Provide effective mount options, direct/interpreter outcomes, the temporary exec result and restored noexec refusal.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E4/lockout-and-recovery.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-08/mount-options.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E4.4 Interpretation
+### 8.4 Interpretation
 
-Explain the reason for each refusal and how logs support it. Why can a valid key still fail? Why is copying the client-container key path into a laptop command insufficient?
+What risk did noexec reduce, and what remains possible? Why not bind /var/tmp to volatile /tmp blindly?
 
 <Your answer>
 
-### E4.5 Changed-condition scenario
+### 8.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
 
-## E5: Source policy and stateful filtering
+## Phase 9: Remote access restrictions
 
 Assigned scenario: <A or B>
 
-### E5.1 Prediction
+### 9.1 Prediction
 
-Predict what a second client with the same valid lab key can do before and after the source allowlist. Then predict HTTP access from the approved and new client after the firewall is applied.
-
-<Your answer>
-
-### E5.2 Decision
-
-Explain the distinction between sshd authorization and packet filtering, rule order, and why you use nft-lab rather than flushing the whole ruleset.
+Predict the new-source test using the same valid lab key after the account/source allowlist.
 
 <Your answer>
 
-### E5.3 Evidence
+### 9.2 Decision
 
-Provide the same-key/different-source SSH test, the two-client HTTP tests, relevant rules/counters, and post-restart policy, SSH and DNS checks. Identify any manually started service that stopped.
+Explain the explicit allowlist and why a Match Address block alone does not deny all other sources.
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+### 9.3 Evidence
+
+Attach the allowlist, both source identities and the same-key/different-source SSH result before the firewall is applied.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E5/source-and-client-tests.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-09/ssh-source-policy.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E5.4 Interpretation
+### 9.4 Interpretation
 
-Explain which layer caused each refusal. Why might an existing connection behave differently from a fresh one? What does the restart test prove and not prove?
+Which layer refused the attempt? What can change when the approved container is recreated?
 
 <Your answer>
 
-### E5.5 Changed-condition scenario
+### 9.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
 
-## E6: Log events and temporary bans
+## Phase 10: Host firewall with nftables
 
 Assigned scenario: <A or B>
 
-### E6.1 Prediction
+### 10.1 Prediction
 
-Predict normal access after five distinct 404 requests and after the sixth within the configured window. Why might counting both Python log lines produce an earlier ban?
-
-<Your answer>
-
-### E6.2 Decision
-
-Explain which line your filter counts, why the backend fits the environment, and the purpose of each threshold/window value.
+Predict SSH/HTTP from the approved client and HTTP from a new source after filtering.
 
 <Your answer>
 
-### E6.3 Evidence
+### 10.2 Decision
 
-Attach filter-count evidence, the not-banned and banned states, a blocked request and the successful request after unban. Link each result to the same source address.
+Explain rule order, connection state, source scope and why the lab replaces only its own table.
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+### 10.3 Evidence
+
+Attach rules/counters, both client HTTP results, and post-restart policy, SSH and DNS checks.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E6/filter-and-event-counts.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-10/firewall-and-counters.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E6.4 Interpretation
+### 10.4 Interpretation
 
-Does a ban prove that the client was malicious? Explain a plausible false positive and how you would observe it before changing the detector.
+What does the restart test prove, and how would you distinguish a missing listener from packet filtering?
 
 <Your answer>
 
-### E6.5 Changed-condition scenario
+### 10.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
 
-## E7: Mount restrictions and a limited service identity
+## Phase 11: Rate limits, connection caps and Fail2ban
 
 Assigned scenario: <A or B>
 
-### E7.1 Prediction
+### 11.1 Prediction
 
-Predict direct execution of the binary/script on noexec /tmp and explicit interpreter execution. Predict the path visible inside chroot for a file stored under /srv/jail/www outside.
-
-<Your answer>
-
-### E7.2 Decision
-
-Explain why you combine mount policy, a changed filesystem root, a separate service UID and root-owned static content. What does each contribute?
+Predict a third simultaneous SSH connection under the cap, a third quick HTTP request under the meter, and access after five/six counted 404 events.
 
 <Your answer>
 
-### E7.3 Evidence
+### 11.2 Decision
 
-Provide effective mount options, direct/interpreter outcomes, restored noexec refusal, the HTTP response, actual service PID/UID and inside/outside path checks.
+Explain what each control counts, rule order, the matched log line and the jail thresholds.
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+### 11.3 Evidence
+
+Attach 11A allowed/refused tests and counters; then 11B filter counts, fifth/sixth-event states, a blocked request and successful recovery.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E7/mount-tests.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-11/cap-and-meter-tests.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E7.4 Interpretation
+### 11.4 Interpretation
 
-Why is a missing /etc inside this small jail expected? Does successful HTTP mean the service is safely isolated? State two boundaries this experiment does not provide.
+Explain one false-positive risk and one limit of your measurement. Does a ban establish intent?
 
 <Your answer>
 
-### E7.5 Changed-condition scenario
+### 11.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
 
-## E8: Updates and reviewed integrity changes
+## Phase 12: Updates and baseline hygiene
 
 Assigned scenario: <A or B>
 
-### E8.1 Prediction
+### 12.1 Prediction
 
-Predict the AIDE result before and after the controlled /etc/hosts change. What can a dry run establish about update policy, and what can it not establish about automatic scheduling?
-
-<Your answer>
-
-### E8.2 Decision
-
-Explain the security origin policy, monitored scope, exact exclusions and reason for reviewing a difference before accepting a new baseline.
+What do you expect a strict metadata refresh and a dry run to establish? Could no available updates be a valid outcome?
 
 <Your answer>
 
-### E8.3 Evidence
+### 12.2 Decision
 
-Attach effective update policy/dry-run evidence and the clean, changed and reviewed-clean AIDE outcomes. Include the relevant diff and decision; do not invent installed updates if none were available.
+Explain trusted origins, the selected update policy and your restart/recovery considerations.
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+### 12.3 Evidence
+
+Attach effective policy, dry-run/actual output, relevant package history and reboot/restart observations.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E8/update-policy-and-actions.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-12/update-policy.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E8.4 Interpretation
+### 12.4 Interpretation
 
-Explain why a clean integrity report does not prove absence of compromise. How do the baseline's trust and monitored scope limit the conclusion?
+What can the container prove about package maintenance, and what needs a VM/host check?
 
 <Your answer>
 
-### E8.5 Changed-condition scenario
+### 12.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
 
-## E9: Inventory and an evidence-based investigation
+## Phase 13: Chroot
 
 Assigned scenario: <A or B>
 
-### E9.1 Prediction
+### 13.1 Prediction
+
+Predict the inside path for /srv/jail/www and whether the prepared jail contains the target's /etc.
+
+<Your answer>
+
+### 13.2 Decision
+
+Explain the minimal static binary, dedicated UID and root-owned executable/static content.
+
+<Your answer>
+
+### 13.3 Evidence
+
+Provide the HTTP result, actual service PID/UID and inside/outside path observations.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
+|---|---|---|---|---|---|
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-13/service-response-and-identity.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
+
+### 13.4 Interpretation
+
+State a benefit and two boundaries chroot does not provide.
+
+<Your answer>
+
+### 13.5 Changed-condition scenario
+
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
+
+
+## Phase 14: AIDE: file integrity monitoring
+
+Assigned scenario: <A or B>
+
+### 14.1 Prediction
+
+Predict the initial comparison and the result after the controlled /etc/hosts change.
+
+<Your answer>
+
+### 14.2 Decision
+
+Explain monitored properties, scope, exclusions and why review precedes accepting a baseline.
+
+<Your answer>
+
+### 14.3 Evidence
+
+Attach clean, changed and reviewed-clean outputs plus the actual diff and acceptance decision.
+
+<Your answer>
+
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
+|---|---|---|---|---|---|
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-14/aide-comparisons.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
+
+### 14.4 Interpretation
+
+Why does a clean result not prove absence of compromise?
+
+<Your answer>
+
+### 14.5 Changed-condition scenario
+
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
+
+
+## Phase 15: osquery
+
+Assigned scenario: <A or B>
+
+### 15.1 Prediction
 
 Before querying, name one listener/process relationship you expect to find and one reason a session or inventory table might be empty without proving absence of activity.
 
 <Your answer>
 
-### E9.2 Decision
+### 15.2 Decision
 
 Explain your join/filter and file constraints. Why do you inspect the installed schema and avoid ordinary numeric bit operations on the file table's octal mode text?
 
 <Your answer>
 
-### E9.3 Evidence
+### 15.3 Evidence
 
-Attach the exact queries, JSON output, installed version/schema evidence and a comparison with ss/ps or find. For one finding, record a counter-check that could change your initial interpretation.
+Attach exact queries, JSON output and version/schema evidence for the inventory, SUID/SGID, root-owned listeners and top ten resident-memory processes. Corroborate one finding with ss/ps or find.
 
 <Your answer>
 
-| Test | Machine / user | Command | Expected | Observed / exit status | Evidence |
+| Test / observation | Machine / user | Command | Expected | Observed / exit status | Evidence |
 |---|---|---|---|---|---|
-| Normal / baseline | <context> | <command> | <prediction> | <actual result> | [output](evidence/E9/queries-and-version.txt) |
-| Counter-test / difference / corroboration | <context> | <command> | <prediction> | <actual result> | <relative link> |
+| <baseline / wanted operation> | <context> | <command> | <prediction> | <actual> | [output](evidence/phase-15/queries-and-version.txt) |
+| <comparison / refusal / corroboration if relevant> | <context> | <command> | <prediction> | <actual> | <relative link> |
 
-### E9.4 Interpretation
+### 15.4 Interpretation
 
-Select one actual finding. Explain what you can conclude, one alternative explanation, a justified next action and a limitation of the container observation.
+Select one actual finding and compare it with the earlier baseline. Explain an alternative interpretation, a justified next action and a scope/timing limitation.
 
 <Your answer>
 
-### E9.5 Changed-condition scenario
+### 15.5 Changed-condition scenario
 
-<Identify the assigned variant and changed assumption. Justify an adaptation and a test that could disprove your explanation. Consult EXERCISES.md for the exact prompt.>
+<Identify variant A or B from EXERCISES.md. Explain the changed assumption, your justified response and a test or additional observation.>
 
+
+## Final risk-delta note (maximum 200 words)
+
+<Return to your initial inventory: what changed, what became harder for an attacker, which legitimate actions still work, and what remains outside the lab's protection? Cite your evidence. Do not claim changes you have not tested.>
 
 ## AI use and verification
 
-<If used, name the tool and one useful suggestion that you accepted, corrected or rejected. Explain how you verified it and link the relevant observation. If no AI was used, state that. Do not attach entire chat histories.>
+<If used, name the tool and one suggestion accepted, corrected or rejected, with the observation you used to verify it. State if no AI was used. Full chat histories are unnecessary.>

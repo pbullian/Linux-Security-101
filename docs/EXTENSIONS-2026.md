@@ -1,6 +1,6 @@
-# Optional practical: rate and concurrent connections
+# Phase 11A practical: rate and concurrent connections
 
-Allow another 30–40 minutes after the core network exercises, or use a later session. Start from the completed core guide with Alice's key installed. Keep the target root console open. These policies replace only the lab table. The validator runs these exact blocks with `--extensions`.
+After the Phase 10 firewall practical, explain rate versus concurrency for about 15 minutes, then allow 30–40 minutes for these tests. Start with Alice's key installed and the project file from Phase 7. Continue with Phase 11B (Fail2ban) in section 8 of TP-2026.md afterward. The historical filename is retained for existing links. Keep the target root console open. These policies replace only the lab table. The validator runs these exact blocks with `--extensions`.
 
 ## 1. Limit simultaneous SSH connections
 

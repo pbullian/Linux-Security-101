@@ -27,16 +27,16 @@ The revision keeps the original Linux-security topics and makes the practical re
 - AIDE creates needed directories, uses `database_in`, anchors exact file exclusions and requires review before a new baseline.
 - osquery queries use actual schema columns, constrain the `file` table and avoid treating octal mode text as decimal numbers.
 
-## Reproduce validation
+## Validation in the restored original order
 
-The final fresh run on 14 October 2026 passed **71/71 executable blocks** in teaching order: 63 core blocks and 8 extension blocks, including 13 expected nonzero outcomes. It used osquery 5.23.1. Host-key uniqueness, loopback binding, log permissions, binary ownership and preservation of an existing firewall after invalid input also passed. The disposable project was removed. [Machine-readable results](VALIDATION-2026.json) record the source hashes and individual results.
+A fresh run on 15 October 2026 passed **71/71 executable blocks**, including 13 expected nonzero outcomes, on Linux x86_64 with osquery 5.23.1. It followed original phase order, with rate/concurrency after Phase 10 and before Fail2ban. Host-key uniqueness, loopback binding, log permissions, binary ownership and preservation of the firewall after invalid input also passed. The disposable project was removed. [Current run](VALIDATION-2026-10-15.json) records exact guide hashes and results; [the prior run](VALIDATION-2026.json) is retained as history.
 
-Build the images, then run `python3 tests/validate_guide.py --extensions`. The validator checks the guide's exact executable blocks, expected nonzero outcomes, independent host keys, loopback exposure, log readability and binary ownership. It records the guide hash and removes its own disposable project. See the README for teaching order, output paths and dependencies.
+Build the images, then run `python3 tests/validate_guide.py --extensions`. Docker Desktop, ARM runtime behaviour and VM boot/scheduler behaviour need separate classroom preflight.
 
-Linux x86_64 is the exercised platform. ARM execution, macOS/Windows Docker Desktop and VM boot/scheduler behaviour still need separate classroom preflight. Checksums for an architecture are not proof of runtime testing on that architecture.
+## Restored teaching sequence
 
-## Teaching and report revision
+The original Phase 0–15 sequence is restored. Phase 0 explains mission, setup and deliverables; Phase 1 defines the threat surface and the purpose of the baseline audit. Every phase places its practical after the corresponding concepts. Section checkpoints identify where to pause inside the command reference. The historical EXTENSIONS-2026.md filename now contains TP 11A, part of the original rate/concurrency topic.
 
-The generic E1–E9 sequence now alternates about 20 minutes of explanation with practice and a short review. Student questions, a Markdown report template, an evidence manifest and submission guidance use the same IDs. Questions require predictions, actual output, an explanation of limits and an assigned changed-condition scenario. Optional tutoring hints do not provide copy protection.
+Students use the same phase numbers in the questions and Markdown report. The new worked Phase 1 example shows observations, evidence, decisions and limitations using clearly labelled fictional snippets. Phase 1 does not require a configuration change. Later phases use tests appropriate to their control. The final risk-delta note returns to the starting inventory.
 
-This revision changes prose and student documents only. All 63 core and 8 extension Bash blocks remain byte-for-byte identical to the previously validated revision. The historical runtime result retains its original whole-document hashes; [the documentation comparison](DOCUMENTATION-VALIDATION-2026.json) records the new prose hash and unchanged command blocks. No new runtime pass is claimed for this documentation-only change.
+All 63 core and 8 rate/concurrency Bash blocks remain byte-for-byte identical to the corrected edition. [The comparison](DOCUMENTATION-VALIDATION-2026.json) records this; the fresh run additionally validates their restored execution order. Private teacher answers are maintained in the separate private course repository.
