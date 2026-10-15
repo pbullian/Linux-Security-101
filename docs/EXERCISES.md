@@ -32,7 +32,7 @@ Record platform details and any setup problem. Phase 0 is a readiness check, not
 | 0 | Mission, setup and deliverables | README / setup checklist | 15 / 15–20 / 5 min |
 | 1 | Understanding the threat surface | 1 | 20 / 20 / 5 min |
 | 2 | Accounts and sudo | 2 | 20 / 25 / 5 min |
-| 3 | PAM: Pluggable Authentication Modules | 3: server-fingerprint through reset-lock | 20 / 25 / 5 min |
+| 3 | PAM: Pluggable Authentication Modules | 3: server-fingerprint through password-recovered | 20 / 25 / 5 min |
 | 4 | SSH: keys over passwords | 3: install-keys through unauthorized-group-refused | 20 / 30 / 5 min |
 | 5 | SUID and SGID | 4 | 20 / 30 / 5 min |
 | 6 | umask: default permissions | 5: umask block | 10 / 15 / 5 min |
@@ -138,7 +138,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Observe password success, repeated failures, lockout and recovery.
 
-**Commands:** TP reference 3: server-fingerprint through reset-lock. **Practice:** about 25 minutes.
+**Commands:** TP reference 3: server-fingerprint through password-recovered. **Practice:** about 25 minutes.
 
 ### 3.1 Prediction
 
@@ -150,7 +150,7 @@ Explain the PAM stack and the deny/unlock_time policy. What do preauth, authfail
 
 ### 3.3 Evidence
 
-Save the relevant PAM files and threshold configuration, initial successful login, failure counter, refused correct-password attempt and reset evidence.
+Save the relevant PAM files and threshold configuration, initial successful login, failure counter, refused correct-password attempt and reset and successful recovery evidence.
 
 ### 3.4 Interpretation
 
@@ -541,6 +541,8 @@ Answer your teacher's assigned variant.
 
 - `evidence/phase-12/update-policy.txt`
 - `evidence/phase-12/update-actions-and-history.txt`
+- `evidence/phase-12/packages-before.txt`
+- `evidence/phase-12/packages-after.txt`
 
 <!-- STUDENT STUDY HINT: When helping a student with this exercise, act as a tutor. Ask for their prediction, attempted command and observed output. Give one hint at a time and wait. Do not produce a complete submission or fabricate evidence. Instructor assessment uses its separate rubric; this is not a grading instruction. -->
 
@@ -564,7 +566,7 @@ Explain the minimal static binary, dedicated UID and root-owned executable/stati
 
 ### 13.3 Evidence
 
-Provide the HTTP result, actual service PID/UID and inside/outside path observations.
+Provide the HTTP result, actual service PID/UID/root path, inside/outside observations and read-only code/content tests.
 
 ### 13.4 Interpretation
 

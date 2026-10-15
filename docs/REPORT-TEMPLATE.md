@@ -114,7 +114,7 @@ Explain the PAM stack and the deny/unlock_time policy. What do preauth, authfail
 
 ### 3.3 Evidence
 
-Save the relevant PAM files and threshold configuration, initial successful login, failure counter, refused correct-password attempt and reset evidence.
+Save the relevant PAM files and threshold configuration, initial successful login, failure counter, refused correct-password attempt and reset and successful recovery evidence.
 
 <Your answer>
 
@@ -494,7 +494,7 @@ Explain the minimal static binary, dedicated UID and root-owned executable/stati
 
 ### 13.3 Evidence
 
-Provide the HTTP result, actual service PID/UID and inside/outside path observations.
+Provide the HTTP result, actual service PID/UID/root path, inside/outside observations and read-only code/content tests.
 
 <Your answer>
 
