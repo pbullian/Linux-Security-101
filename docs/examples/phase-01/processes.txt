@@ -1,0 +1,8 @@
+ILLUSTRATIVE TEACHING DATA. Not a measured run or student submission.
+Context: TARGET container, root console
+Command: ps aux
+Selected simplified fields only, not the complete command output:
+USER   PID  COMMAND
+root    42  sshd: /usr/sbin/sshd -D
+root    55  /usr/sbin/rsyslogd
+Actual process IDs and arguments vary. Submit your own full relevant output.

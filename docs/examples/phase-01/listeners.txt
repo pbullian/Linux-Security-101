@@ -1,0 +1,6 @@
+ILLUSTRATIVE TEACHING DATA. Not a measured run or student submission.
+Context: TARGET container, root console
+Command: ss -tulpn
+Selected line:
+tcp LISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:(("sshd",pid=42,fd=3))
+Addresses, PIDs and additional listeners vary in a real run.
