@@ -1,32 +1,36 @@
 {
-  "base_commit": "0fbc4ba29e89eeeea7b9fa7010b45ca85dfe4751",
-  "restored_phase_order": [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15
-  ],
+  "base_commit": "cecdf25bd32f19d650017cc17889286bd96b4e63",
+  "final_run": "VALIDATION-2026-10-15-FINAL.json",
+  "final_run_matches_published_guide": true,
   "files": {
     "TP-2026.md": {
-      "executable_blocks": 63,
-      "unchanged": true,
-      "current_sha256": "646f6ff92a250254525bb6a215e4a6a87f7a7b0c03435d1126716069c2cdccbd"
+      "executable_blocks": 64,
+      "unchanged": false,
+      "added_blocks": [
+        "password-recovered"
+      ],
+      "changed_blocks": [
+        "baseline",
+        "accounts",
+        "reset-lock",
+        "install-keys",
+        "umask",
+        "acl-alice-write",
+        "acl-bob-read",
+        "web-before-filter",
+        "restart-target",
+        "update-refresh",
+        "chroot-start",
+        "chroot-inside",
+        "aide-change"
+      ],
+      "current_sha256": "1e0e717abccd755483f1b63e50585155f18a429d8410e8accab7d851e3db5b42"
     },
     "EXTENSIONS-2026.md": {
       "executable_blocks": 8,
       "unchanged": true,
+      "added_blocks": [],
+      "changed_blocks": [],
       "current_sha256": "5fa1fc359bf10a2ab2dde2f75c4b2bc239a222a118708c9e48eef829735d161c"
     }
   }

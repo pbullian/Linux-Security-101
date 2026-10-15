@@ -27,11 +27,15 @@ The revision keeps the original Linux-security topics and makes the practical re
 - AIDE creates needed directories, uses `database_in`, anchors exact file exclusions and requires review before a new baseline.
 - osquery queries use actual schema columns, constrain the `file` table and avoid treating octal mode text as decimal numbers.
 
-## Validation in the restored original order
+## Final Docker verification of all phases
 
-A fresh run on 15 October 2026 passed **71/71 executable blocks**, including 13 expected nonzero outcomes, on Linux x86_64 with osquery 5.23.1. It followed original phase order, with rate/concurrency after Phase 10 and before Fail2ban. Host-key uniqueness, loopback binding, log permissions, binary ownership and preservation of the firewall after invalid input also passed. The disposable project was removed. [Current run](VALIDATION-2026-10-15.json) records exact guide hashes and results; [the prior run](VALIDATION-2026.json) is retained as history.
+On 15 October 2026, both images were rebuilt without cache. The final Linux x86_64 run passed **72/72 executable blocks**, including 13 expected nonzero results. [Final results](VALIDATION-2026-10-15-FINAL.json) match the published guide hash and record image IDs, package versions and osquery 5.23.1.
 
-Build the images, then run `python3 tests/validate_guide.py --extensions`. Docker Desktop, ARM runtime behaviour and VM boot/scheduler behaviour need separate classroom preflight.
+A separate [full run with reused student consoles](VALIDATION-2026-10-15-CONSOLES.json) passed 72/72 and verified the terminal context through the sequence. This caught Bob's stale group membership in an earlier attempt. The final strict run also includes the last Phase 3 map clarification and stricter inner chroot assertions.
+
+The guide now restores the umask and working directory, requires a fresh Bob console after group changes, waits for readiness after target restart, and uses an AIDE subshell that keeps the recovery console open. It explicitly checks password recovery, authorized-source SSH and chroot code/content write restrictions. Setup/lifecycle checks verify artifact persistence, stop/start, recreation and new host keys. All twelve osquery JSON evidence files parse successfully.
+
+Build the images, then run `python3 tests/validate_guide.py --extensions`. Repeat with `--persistent-shells` to model reused student consoles. Both modes clean up their disposable projects. Docker Desktop, ARM runtime behavior and VM boot/scheduler behavior need separate preflight. [Earlier restored-order results](VALIDATION-2026-10-15.json) remain historical.
 
 ## Restored teaching sequence
 
@@ -39,4 +43,4 @@ The original Phase 0–15 sequence is restored. Phase 0 explains mission, setup 
 
 Students use the same phase numbers in the questions and Markdown report. The new worked Phase 1 example shows observations, evidence, decisions and limitations using clearly labelled fictional snippets. Phase 1 does not require a configuration change. Later phases use tests appropriate to their control. The final risk-delta note returns to the starting inventory.
 
-All 63 core and 8 rate/concurrency Bash blocks remain byte-for-byte identical to the corrected edition. [The comparison](DOCUMENTATION-VALIDATION-2026.json) records this; the fresh run additionally validates their restored execution order. Private teacher answers are maintained in the separate private course repository.
+The guide now contains 64 core blocks and 8 rate/concurrency blocks. [The source comparison](DOCUMENTATION-VALIDATION-2026.json) records added/changed blocks and links the final validation. Private teacher answers remain in the separate private course repository.
