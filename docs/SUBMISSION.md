@@ -1,6 +1,6 @@
 # Submit a short, evidence-based report
 
-Your teacher specifies the assigned phases and one scenario variant (A or B) for each. Follow [EXERCISES.md](EXERCISES.md) and its linked [step-by-step commands](COMMANDS.md) and copy [REPORT-TEMPLATE.md](REPORT-TEMPLATE.md) to `report.md`. Read [the worked Phase 1 example](REPORT-EXAMPLE.md) first. It uses clearly labelled fictional output to show the expected reasoning. Keep the five stable question IDs for every assigned phase and remove unassigned sections.
+Your teacher specifies the assigned phases and one scenario variant (A or B) for each. Follow [EXERCISES.md](EXERCISES.md) and copy [REPORT-TEMPLATE.md](REPORT-TEMPLATE.md) to `report.md`. Read [the worked Phase 1 example](REPORT-EXAMPLE.md) first. It uses clearly labelled fictional output to show the expected reasoning. Keep the five stable question IDs for every assigned phase and remove unassigned sections.
 
 Each phase asks for a prediction, a justified decision, actual evidence, an explanation/limitation and a changed-condition scenario. Aim for about **100–200 words per phase**, excluding raw output and tables. Clear, shorter answers are welcome. Do not paste the full command reference as your answer.
 
