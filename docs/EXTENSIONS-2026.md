@@ -21,11 +21,11 @@ Keep two connections alive, verify both actually succeed, and require the third 
 ```bash
 # CLIENT [extension-cap-test]
 lab_ssh=(ssh -i /root/.ssh/labkey -o BatchMode=yes -o ConnectTimeout=3 -o ControlMaster=no)
-"${lab_ssh[@]}" alice@host 'sleep 8' > /tmp/cap1.log 2>&1 & lab_first=$!
+"${lab_ssh[@]}" alice@target 'sleep 8' > /tmp/cap1.log 2>&1 & lab_first=$!
 sleep 1
-"${lab_ssh[@]}" alice@host 'sleep 8' > /tmp/cap2.log 2>&1 & lab_second=$!
+"${lab_ssh[@]}" alice@target 'sleep 8' > /tmp/cap2.log 2>&1 & lab_second=$!
 sleep 1
-if "${lab_ssh[@]}" alice@host true > /tmp/cap3.log 2>&1; then lab_third=0; else lab_third=$?; fi
+if "${lab_ssh[@]}" alice@target true > /tmp/cap3.log 2>&1; then lab_third=0; else lab_third=$?; fi
 wait "$lab_first"
 wait "$lab_second"
 cat /tmp/cap3.log
@@ -57,18 +57,18 @@ nft add rule inet filter input tcp dport 8092 counter accept
 
 ```bash
 # CLIENT [extension-meter-two-allowed]
-curl --fail --max-time 2 http://host:8092/report
-curl --fail --max-time 2 http://host:8092/report
+curl --fail --max-time 2 http://target:8092/report
+curl --fail --max-time 2 http://target:8092/report
 ```
 
 ```bash
 # CLIENT [extension-meter-third-refused] expect=7
-curl --fail --max-time 2 http://host:8092/report
+curl --fail --max-time 2 http://target:8092/report
 ```
 
 ```bash
 # LAPTOP [extension-meter-other-source-allowed]
-docker compose run --rm -T --no-deps attacker curl --fail --max-time 2 http://host:8092/report
+docker compose run --rm -T --no-deps client curl --fail --max-time 2 http://target:8092/report
 ```
 
 ```bash

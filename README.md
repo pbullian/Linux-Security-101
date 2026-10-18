@@ -17,7 +17,6 @@ Install Git and Docker Engine with the Compose plugin, or Docker Desktop configu
 ```sh
 git clone https://github.com/pbullian/Linux-Security-101.git
 cd Linux-Security-101
-mkdir -p artifacts
 docker compose up -d --build
 docker compose ps
 ```
@@ -25,24 +24,24 @@ docker compose ps
 The first build downloads the container images and may take a few minutes. Open two more terminals in the repository and start the target and client consoles:
 
 ```sh
-docker compose exec host bash
+docker compose exec target bash
 ```
 
 ```sh
-docker compose exec attacker bash
+docker compose exec client bash
 ```
 
-Open the last two commands in separate terminals. Both consoles start as root **inside their container**. The guide explicitly marks checks that must run as an ordinary user. Use `docker compose exec` rather than assuming fixed container names.
+Open the last two commands in separate terminals. Their prompts show `root@target` and `root@client`. Both consoles start as root inside their container. The guide marks checks that must run as an ordinary user.
 
-The target is reachable as `host:22` from the client. Its SSH port is published only at `127.0.0.1:2222`. Set `LAB_SSH_PORT` before starting if that port is occupied. Client tools are already installed. The client and target have separate filesystems: a key generated in the client does not exist on your laptop.
+The target is reachable as `target:22` from the client. Its SSH port is published only at `127.0.0.1:2222`. Set `LAB_SSH_PORT` before starting if that port is occupied. Client tools are already installed. The client and target have separate filesystems: a key generated in the client does not exist on your laptop.
 
 This lab deliberately includes the password `student:student`, two SUID binaries and a world-writable directory. Run it only as a disposable teaching lab. Mount only the artifacts directory. The mount exercise needs `SYS_ADMIN`; firewall exercises need `NET_ADMIN`. These privileges apply to the target container, so do not use this configuration as a production server template.
 
 ## Preflight
 
 ```sh
-docker compose exec host bash -c 'sshd -t; nft --version; findmnt -T /tmp -no OPTIONS; ls -l /var/log/auth.log'
-docker compose exec attacker bash -c 'ip -4 addr show eth0; command -v ssh curl nc nmap; getent hosts host'
+docker compose exec target bash -c 'sshd -t; nft --version; findmnt -T /tmp -no OPTIONS; ls -l /var/log/auth.log'
+docker compose exec client bash -c 'ip -4 addr show eth0; command -v ssh curl nc nmap; getent hosts target'
 ```
 
 Builds use each machine's native architecture. Run the preflight checks below before beginning the exercises.
@@ -51,11 +50,11 @@ Builds use each machine's native architecture. Run the preflight checks below be
 
 `./artifacts` on the laptop is mounted at `/artifacts` on the target. Save evidence from the root target console. From an ordinary user's session use `sudo tee /artifacts/name.txt`; `sudo command > /artifacts/name.txt` does not elevate the shell's redirection.
 
-Use `nft-lab reset` to replace only the lab's `inet filter` table. Never use `nft flush ruleset` here: it also deletes Docker's DNS NAT rules. Use `nft-lab save` to persist the lab table across `docker compose restart host`. Fail2ban manages its own table and recreates its bans separately.
+Use `nft-lab reset` to replace only the lab's `inet filter` table. Never use `nft flush ruleset` here: it also deletes Docker's DNS NAT rules. Use `nft-lab save` to persist the lab table across `docker compose restart target`. Fail2ban manages its own table and recreates its bans separately.
 
 ```sh
 # Restart preserves container accounts/configuration and saved firewall policy.
-docker compose restart host
+docker compose restart target
 # Destroy and recreate containers to return to the initial exercise state.
 docker compose down
 docker compose up -d
@@ -63,6 +62,6 @@ docker compose up -d
 
 The bind-mounted `artifacts` directory survives both commands, including `down -v`. Archive or clear it deliberately on the laptop when needed. Resetting recreates SSH host keys; verify the new fingerprint before replacing a stale known-host entry.
 
-The root Dockerfile/start.sh are authoritative. Copies under `host/` remain for the legacy build command `docker build -f host/Dockerfile .` with the repository root as its build context.
+The root Dockerfile/start.sh are authoritative. Copies under `target/` remain for the legacy build command `docker build -f target/Dockerfile .` with the repository root as its build context.
 
 The update exercise changes packages inside the disposable target. It needs repository access; the osquery installation also needs GitHub release access.

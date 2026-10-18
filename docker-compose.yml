@@ -1,7 +1,8 @@
 services:
-  host:
+  target:
     build: .
-    image: linux-security-host:2026
+    image: linux-security-target:2026
+    hostname: target
     ports:
       - "127.0.0.1:${LAB_SSH_PORT:-2222}:22"
     cap_add:
@@ -13,21 +14,16 @@ services:
       - /tmp:rw,noexec,nosuid,nodev,mode=1777
     volumes:
       - ./artifacts:/artifacts
-    networks:
-      default:
-        aliases: [sec_host]
     healthcheck:
       test: ["CMD-SHELL", "/usr/sbin/sshd -t && pgrep -x sshd >/dev/null"]
       interval: 3s
       timeout: 2s
       retries: 15
-  attacker:
-    build: ./attacker
-    image: linux-security-attacker:2026
+  client:
+    build: ./client
+    image: linux-security-client:2026
+    hostname: client
     command: sleep infinity
     depends_on:
-      host:
+      target:
         condition: service_healthy
-    networks:
-      default:
-        aliases: [sec_attacker]
