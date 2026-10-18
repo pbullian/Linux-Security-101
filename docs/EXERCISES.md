@@ -8,11 +8,11 @@ Phase 1 establishes the before-state. You are not asked to invent vulnerabilitie
 
 ## What you do and submit
 
-After a short explanation, complete the matching TP before moving to the next phase. Use the original phase numbers throughout your report. TP reference section numbers are locations for command blocks; the map below tells you which blocks to use. Phase 11 has two practical blocks, 11A and 11B, within the same phase.
+After a short explanation, complete the matching TP before moving to the next phase. Use the original phase numbers throughout your report. Follow the numbered command steps in [COMMANDS.md](COMMANDS.md) for each phase. The step heading identifies whether to use the laptop, target or client console. Phase 11 has two practical blocks, 11A and 11B, in that order.
 
 Submit one ZIP with report.md, manifest.json and linked evidence files. For each assigned phase, answer five short questions: prediction, decision, evidence, interpretation and the teacher's scenario variant. Keep actual command/context/output, explain why the result matters, and state a limitation. Finish with a risk-delta note of at most 200 words.
 
-Read [REPORT-EXAMPLE.md](REPORT-EXAMPLE.md) before starting. It shows a complete Phase 1 entry with explicitly fictional evidence. Use [REPORT-TEMPLATE.md](REPORT-TEMPLATE.md) for your own results and [SUBMISSION.md](SUBMISSION.md) for the structure and rubric. Follow the command blocks in the matching course slides. The additional rate and concurrency exercise for Phase 11 is in [EXTENSIONS-2026.md](EXTENSIONS-2026.md).
+Read [REPORT-EXAMPLE.md](REPORT-EXAMPLE.md) before starting. It shows a complete Phase 1 entry with explicitly fictional evidence. Use [REPORT-TEMPLATE.md](REPORT-TEMPLATE.md) for your own results and [SUBMISSION.md](SUBMISSION.md) for the structure and rubric. Use [COMMANDS.md](COMMANDS.md) for the exact commands and run order; use the slides for the short concept explanation before each practical. The additional rate and concurrency exercise for Phase 11 is in [EXTENSIONS-2026.md](EXTENSIONS-2026.md).
 
 ## Phase 0: setup checklist
 
@@ -27,24 +27,24 @@ Record platform details and any setup problem. Phase 0 is a readiness check, not
 
 # Phase map
 
-| Phase | Original concept | TP reference | Explain / practice / review |
+| Phase | Original concept | Command steps | Explain / practice / review |
 |---|---|---|---|
-| 0 | Mission, setup and deliverables | README / setup checklist | 15 / 15–20 / 5 min |
-| 1 | Understanding the threat surface | 1 | 20 / 20 / 5 min |
-| 2 | Accounts and sudo | 2 | 20 / 25 / 5 min |
-| 3 | PAM: Pluggable Authentication Modules | 3: server-fingerprint through password-recovered | 20 / 25 / 5 min |
-| 4 | SSH: keys over passwords | 3: install-keys through unauthorized-group-refused | 20 / 30 / 5 min |
-| 5 | SUID and SGID | 4 | 20 / 30 / 5 min |
-| 6 | umask: default permissions | 5: umask block | 10 / 15 / 5 min |
-| 7 | ACL: Access Control Lists | 5: acl-setup through acl-bob-write-refused | 15 / 25 / 5 min |
-| 8 | fstab and mount options | 6 | 20 / 25 / 5 min |
-| 9 | Remote access restrictions | 7: source-policy through ssh-other-source-refused | 15 / 20 / 5 min |
-| 10 | Host firewall with nftables | 7: firewall through ssh-after-restart | 20 / 35 / 5 min |
-| 11 | Rate limits, connection caps and Fail2ban | 11A: EXTENSIONS-2026.md; 11B: reference section 8 | 30 / 60 / 5 min |
-| 12 | Updates and baseline hygiene | 9 | 20 / 25 / 5 min |
-| 13 | Chroot | 10 | 20 / 35 / 5 min |
-| 14 | AIDE: file integrity monitoring | 11 | 20 / 30 / 5 min |
-| 15 | osquery | 12 | 20 / 35 / 5 min |
+| 0 | Mission, setup and deliverables | README setup checklist | 15 / 15–20 / 5 min |
+| 1 | Understanding the threat surface | [Phase 1 command steps](COMMANDS.md#phase-1-threat-surface-audit) | 20 / 20 / 5 min |
+| 2 | Accounts and sudo | [Phase 2 command steps](COMMANDS.md#phase-2-accounts-and-sudo) | 20 / 25 / 5 min |
+| 3 | PAM: Pluggable Authentication Modules | [Phase 3 command steps](COMMANDS.md#phase-3-pam-lockout) | 20 / 25 / 5 min |
+| 4 | SSH: keys over passwords | [Phase 4 command steps](COMMANDS.md#phase-4-ssh-keys) | 20 / 30 / 5 min |
+| 5 | SUID and SGID | [Phase 5 command steps](COMMANDS.md#phase-5-suid-and-sgid) | 20 / 30 / 5 min |
+| 6 | umask: default permissions | [Phase 6 command steps](COMMANDS.md#phase-6-umask) | 10 / 15 / 5 min |
+| 7 | ACL: Access Control Lists | [Phase 7 command steps](COMMANDS.md#phase-7-acls) | 15 / 25 / 5 min |
+| 8 | fstab and mount options | [Phase 8 command steps](COMMANDS.md#phase-8-mount-flags) | 20 / 25 / 5 min |
+| 9 | Remote access restrictions | [Phase 9 command steps](COMMANDS.md#phase-9-ssh-source-policy) | 15 / 20 / 5 min |
+| 10 | Host firewall with nftables | [Phase 10 command steps](COMMANDS.md#phase-10-nftables-firewall) | 20 / 35 / 5 min |
+| 11 | Rate limits, connection caps and Fail2ban | [11A rate limits](COMMANDS.md#phase-11a-rate-and-connection-limits); [11B Fail2ban](COMMANDS.md#phase-11b-fail2ban) | 30 / 60 / 5 min |
+| 12 | Updates and baseline hygiene | [Phase 12 command steps](COMMANDS.md#phase-12-updates) | 20 / 25 / 5 min |
+| 13 | Chroot | [Phase 13 command steps](COMMANDS.md#phase-13-chroot) | 20 / 35 / 5 min |
+| 14 | AIDE: file integrity monitoring | [Phase 14 command steps](COMMANDS.md#phase-14-aide-integrity-monitoring) | 20 / 30 / 5 min |
+| 15 | osquery | [Phase 15 command steps](COMMANDS.md#phase-15-osquery-inventory) | 20 / 35 / 5 min |
 
 <!-- PAGEBREAK -->
 
@@ -54,7 +54,7 @@ Record platform details and any setup problem. Phase 0 is a readiness check, not
 
 **Goal:** Build an initial inventory and justify what to keep, restrict or investigate.
 
-**Commands:** TP reference 1. **Practice:** about 20 minutes.
+**Commands:** [Run the Phase 1 steps](COMMANDS.md#phase-1-threat-surface-audit). **Practice:** about 20 minutes.
 
 ### 1.1 Prediction
 
@@ -96,7 +96,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Give Alice an administrative role and prove Bob does not have it.
 
-**Commands:** TP reference 2. **Practice:** about 25 minutes.
+**Commands:** [Run the Phase 2 steps](COMMANDS.md#phase-2-accounts-and-sudo). **Practice:** about 25 minutes.
 
 ### 2.1 Prediction
 
@@ -138,7 +138,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Observe password success, repeated failures, lockout and recovery.
 
-**Commands:** TP reference 3: server-fingerprint through password-recovered. **Practice:** about 25 minutes.
+**Commands:** [Run the Phase 3 steps](COMMANDS.md#phase-3-pam-lockout). **Practice:** about 25 minutes.
 
 ### 3.1 Prediction
 
@@ -180,7 +180,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Verify key-only access for the authorized account.
 
-**Commands:** TP reference 3: install-keys through unauthorized-group-refused. **Practice:** about 30 minutes.
+**Commands:** [Run the Phase 4 steps](COMMANDS.md#phase-4-ssh-keys). **Practice:** about 30 minutes.
 
 ### 4.1 Prediction
 
@@ -222,7 +222,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Inventory privileged files and close the deliberate SUID path.
 
-**Commands:** TP reference 4. **Practice:** about 30 minutes.
+**Commands:** [Run the Phase 5 steps](COMMANDS.md#phase-5-suid-and-sgid). **Practice:** about 30 minutes.
 
 ### 5.1 Prediction
 
@@ -264,7 +264,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Predict and verify creation modes before introducing default ACLs.
 
-**Commands:** TP reference 5: umask block. **Practice:** about 15 minutes.
+**Commands:** [Run the Phase 6 steps](COMMANDS.md#phase-6-umask). **Practice:** about 15 minutes.
 
 ### 6.1 Prediction
 
@@ -304,7 +304,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Make Alice's new report readable but not writable by Bob.
 
-**Commands:** TP reference 5: acl-setup through acl-bob-write-refused. **Practice:** about 25 minutes.
+**Commands:** [Run the Phase 7 steps](COMMANDS.md#phase-7-acls). **Practice:** about 25 minutes.
 
 ### 7.1 Prediction
 
@@ -345,7 +345,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Demonstrate noexec, its interpreter limitation and policy restoration.
 
-**Commands:** TP reference 6. **Practice:** about 25 minutes.
+**Commands:** [Run the Phase 8 steps](COMMANDS.md#phase-8-mount-flags). **Practice:** about 25 minutes.
 
 ### 8.1 Prediction
 
@@ -386,7 +386,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Isolate source authorization before adding packet filtering.
 
-**Commands:** TP reference 7: source-policy through ssh-other-source-refused. **Practice:** about 20 minutes.
+**Commands:** [Run the Phase 9 steps](COMMANDS.md#phase-9-ssh-source-policy). **Practice:** about 20 minutes.
 
 ### 9.1 Prediction
 
@@ -427,7 +427,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Prove source-specific filtering, persistence and required DNS behavior.
 
-**Commands:** TP reference 7: firewall through ssh-after-restart. **Practice:** about 35 minutes.
+**Commands:** [Run the Phase 10 steps](COMMANDS.md#phase-10-nftables-firewall). **Practice:** about 35 minutes.
 
 ### 10.1 Prediction
 
@@ -469,7 +469,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Compare rate and concurrency, then prove a log-driven ban and recovery.
 
-**Commands:** TP reference 11A: EXTENSIONS-2026.md; 11B: reference section 8. **Practice:** about 60 minutes.
+**Commands:** [Run Phase 11A](COMMANDS.md#phase-11a-rate-and-connection-limits), then [Phase 11B](COMMANDS.md#phase-11b-fail2ban). **Practice:** about 60 minutes.
 
 ### 11.1 Prediction
 
@@ -511,7 +511,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Inspect actual update policy/actions and preserve maintenance evidence.
 
-**Commands:** TP reference 9. **Practice:** about 25 minutes.
+**Commands:** [Run the Phase 12 steps](COMMANDS.md#phase-12-updates). **Practice:** about 25 minutes.
 
 ### 12.1 Prediction
 
@@ -554,7 +554,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Observe the same service from inside and outside its jail.
 
-**Commands:** TP reference 10. **Practice:** about 35 minutes.
+**Commands:** [Run the Phase 13 steps](COMMANDS.md#phase-13-chroot). **Practice:** about 35 minutes.
 
 ### 13.1 Prediction
 
@@ -595,7 +595,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Compare a protected baseline, controlled change and reviewed new baseline.
 
-**Commands:** TP reference 11. **Practice:** about 30 minutes.
+**Commands:** [Run the Phase 14 steps](COMMANDS.md#phase-14-aide-integrity-monitoring). **Practice:** about 30 minutes.
 
 ### 14.1 Prediction
 
@@ -636,7 +636,7 @@ Answer your teacher's assigned variant.
 
 **Goal:** Investigate listeners, privileged files and process state after the earlier controls.
 
-**Commands:** TP reference 12. **Practice:** about 35 minutes.
+**Commands:** [Run the Phase 15 steps](COMMANDS.md#phase-15-osquery-inventory). **Practice:** about 35 minutes.
 
 ### 15.1 Prediction
 

@@ -3,6 +3,7 @@
 Disposable Ubuntu 24.04 target and Debian 12 client for the CPE Linux security course.
 
 - [Student exercises in original Phases 0–15](docs/EXERCISES.md)
+- [Step-by-step commands for every practical](docs/COMMANDS.md)
 - [Markdown report template](docs/REPORT-TEMPLATE.md) and [submission instructions](docs/SUBMISSION.md)
 - [Phase 11 rate and concurrency practical](docs/EXTENSIONS-2026.md)
 
