@@ -4,24 +4,31 @@ Disposable Ubuntu 24.04 target and Debian 12 client for the CPE Linux security c
 
 - [Student exercises in original Phases 0–15](docs/EXERCISES.md)
 - [Markdown report template](docs/REPORT-TEMPLATE.md) and [submission instructions](docs/SUBMISSION.md)
-- [Corrected practical command reference](docs/TP-2026.md)
-- [Phase 11A rate and concurrency practical](docs/EXTENSIONS-2026.md)
-- [Changes and validation](docs/CHANGES-2026.md)
+- [Phase 11 rate and concurrency practical](docs/EXTENSIONS-2026.md)
 
-The original course order is preserved: **Phase 0 setup and deliverables; Phase 1 threat surface; then Phases 2–15 in order**. Explain the concepts for about 15–20 minutes, let students complete that phase's TP, then review their evidence. Phase 11 has two such cycles. The command guide maps every phase to its blocks, including stopping points inside combined reference sections.
+The original course order is preserved: **Phase 0 setup and deliverables; Phase 1 threat surface; then Phases 2–15 in order**. The slides explain each concept before the matching exercise. Use the same phase numbers in your notes and report. Phase 11 has two practice cycles.
 
 Start by showing [the worked Phase 1 report](docs/REPORT-EXAMPLE.md). It explains what students should look for and how to connect an observation to a justified decision. The audit records the starting state; it does not require arbitrary changes. The complete sequence needs roughly 13–14 hours plus breaks at the suggested pace; assign the phases that fit your available teaching time.
 
-## Start
+## Get started
 
-Use Docker Engine with Compose on Linux, or Docker Desktop with Linux containers.
-Run these commands in this repository, on your laptop:
+Install Git and Docker Engine with the Compose plugin, or Docker Desktop configured for Linux containers. Start Docker, then run these commands in a laptop terminal:
 
 ```sh
+git clone https://github.com/pbullian/Linux-Security-101.git
+cd Linux-Security-101
 mkdir -p artifacts
 docker compose up -d --build
 docker compose ps
+```
+
+The first build downloads the container images and may take a few minutes. Open two more terminals in the repository and start the target and client consoles:
+
+```sh
 docker compose exec host bash
+```
+
+```sh
 docker compose exec attacker bash
 ```
 
@@ -38,7 +45,7 @@ docker compose exec host bash -c 'sshd -t; nft --version; findmnt -T /tmp -no OP
 docker compose exec attacker bash -c 'ip -4 addr show eth0; command -v ssh curl nc nmap; getent hosts host'
 ```
 
-Builds use each machine's native architecture. The October 2026 audit was run on Linux x86_64; macOS, Windows and ARM still need a classroom preflight. The old `pbullian/sec_host_win` image was amd64 only. This Compose file builds the corrected source instead.
+Builds use each machine's native architecture. Run the preflight checks below before beginning the exercises.
 
 ## Evidence and restart
 
@@ -58,8 +65,4 @@ The bind-mounted `artifacts` directory survives both commands, including `down -
 
 The root Dockerfile/start.sh are authoritative. Copies under `host/` remain for the legacy build command `docker build -f host/Dockerfile .` with the repository root as its build context.
 
-## Validate the practical
-
-After building the images, run `python3 tests/validate_guide.py --extensions`. The validator creates its own disposable Compose project, executes the guide's exact marked commands in teaching order, checks expected refusals, and removes only that project. It refuses to reuse an existing project. The default and `--order reference` follow original phase order, inserting Phase 11A after guide section 7 and before section 8. `--order legacy` reproduces the superseded reordered edition. Results, command output and a guide hash are saved under the ignored `artifacts/validation/` directory. Add `--persistent-shells` to reuse student consoles across phases, checking working-directory, umask and group-session behavior. The marked fresh Bob session and reopened target after restart follow the guide. Lifecycle checks also verify stop/start and recreation preserve the evidence mount. Use `--keep` only to inspect the final disposable state. Docker Engine, Compose and Python 3 are required.
-
-The update exercise changes packages inside the disposable target. It needs repository access; the osquery installation also needs GitHub release access. Set `--port` if the default validation port 22223 is occupied.
+The update exercise changes packages inside the disposable target. It needs repository access; the osquery installation also needs GitHub release access.

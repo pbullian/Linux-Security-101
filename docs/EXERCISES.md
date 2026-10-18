@@ -12,7 +12,7 @@ After a short explanation, complete the matching TP before moving to the next ph
 
 Submit one ZIP with report.md, manifest.json and linked evidence files. For each assigned phase, answer five short questions: prediction, decision, evidence, interpretation and the teacher's scenario variant. Keep actual command/context/output, explain why the result matters, and state a limitation. Finish with a risk-delta note of at most 200 words.
 
-Read [REPORT-EXAMPLE.md](REPORT-EXAMPLE.md) before starting. It shows a complete Phase 1 entry with explicitly fictional evidence. Use [REPORT-TEMPLATE.md](REPORT-TEMPLATE.md) for your own results and [SUBMISSION.md](SUBMISSION.md) for the structure and rubric. The executable commands are in [TP-2026.md](TP-2026.md), with [EXTENSIONS-2026.md](EXTENSIONS-2026.md) for TP 11A.
+Read [REPORT-EXAMPLE.md](REPORT-EXAMPLE.md) before starting. It shows a complete Phase 1 entry with explicitly fictional evidence. Use [REPORT-TEMPLATE.md](REPORT-TEMPLATE.md) for your own results and [SUBMISSION.md](SUBMISSION.md) for the structure and rubric. Follow the command blocks in the matching course slides. The additional rate and concurrency exercise for Phase 11 is in [EXTENSIONS-2026.md](EXTENSIONS-2026.md).
 
 ## Phase 0: setup checklist
 

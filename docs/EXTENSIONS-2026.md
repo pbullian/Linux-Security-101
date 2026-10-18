@@ -1,6 +1,6 @@
-# Phase 11A practical: rate and concurrent connections
+# Phase 11 practical: rate and concurrent connections
 
-After the Phase 10 firewall practical, explain rate versus concurrency for about 15 minutes, then allow 30–40 minutes for these tests. Start with Alice's key installed and the project file from Phase 7. Continue with Phase 11B (Fail2ban) in section 8 of TP-2026.md afterward. The historical filename is retained for existing links. Keep the target root console open. These policies replace only the lab table. The validator runs these exact blocks with `--extensions`.
+After the firewall exercise, compare rate limits with concurrent-connection limits, then run these tests. Start with Alice's key installed and the project file from the ACL exercise. Continue with Fail2ban in the assigned Phase 11 material. Keep the target root console open. These policies replace only the lab table.
 
 ## 1. Limit simultaneous SSH connections
 
