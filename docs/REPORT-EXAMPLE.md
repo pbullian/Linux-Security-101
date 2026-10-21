@@ -1,12 +1,12 @@
 # Worked report example: Phase 1
 
-This is a **fictional teaching example** showing the expected reasoning and evidence structure. The short outputs in `examples/phase-01/` are deliberately labelled illustrative. Use your own observations, addresses and process IDs in your submitted report.
+This is a **fictional teaching example** showing the expected reasoning and evidence structure. The short outputs in `examples/phase-01/` are deliberately labelled illustrative. Use your own observations and values in your report.
 
 ## Phase 1: Understanding the threat surface
 
 ### 1.1 Prediction
 
-I expect SSH because this server must support remote administration. Before changing settings, I want to identify its listening address and process, then determine which access-policy questions still need testing.
+I expect SSH because this server must support remote administration. Before changing settings, I want to identify its listening address and process, then determine which access-policy questions need further testing.
 
 ### 1.2 Decision
 
@@ -19,25 +19,16 @@ I expect SSH because this server must support remote administration. Before chan
 
 | Context | Command | Relevant result | Evidence |
 |---|---|---|---|
-| Target, root console | `ss -tulpn` | TCP 22 listener owned by sshd | [listeners.txt](examples/phase-01/listeners.txt) |
-| Target, root console | `ps aux` | sshd and rsyslogd process entries | [processes.txt](examples/phase-01/processes.txt) |
+| Target, root console | `ss -tulpn`, `ps aux`, inventory review | TCP 22 listener, sshd and rsyslogd process entries, with two findings and recommendations | [illustrative listener output](examples/phase-01/listeners.txt) |
 
-The root console provides process-owner visibility. The actual report would retain the original transcript with the command and collection context. These example snippets are not proof that a student ran the lab.
+The root console provides process-owner visibility. This illustrative snippet is not proof that a student ran the lab. The actual submission uses the single combined transcript `evidence/phase-01/phase-01-evidence.txt`.
 
 ### 1.4 Interpretation
 
 The SSH listener creates a remote authentication surface. The inventory does not establish weak authentication, a vulnerable version or Internet reachability. `0.0.0.0` describes the container's interfaces; the lab's laptop publication is restricted to loopback.
 
-My next tests will check that Alice can connect using the approved key and that an unauthorized account/source is refused. No hardening has occurred in Phase 1, so I do not claim a reduction in risk yet.
-
-### 1.5 Changed-condition scenario: variant A
-
-If an unfamiliar root-owned listener appears, I will record its PID, command line, bind address/port and package/service purpose before deciding what to change. It might be a legitimate diagnostic process. I will check whether the service is required and which clients need it, then propose a restriction or removal with a recovery path and a functional test.
+My next tests will check that Alice can connect using the approved key and that an unauthorized account or source is refused. No hardening has occurred in Phase 1, so I do not claim a reduction in risk yet.
 
 ## What makes this entry useful
 
-It separates the observed facts, the server's purpose, the decision, the next test and the remaining uncertainty. It does not equate a root-owned listener with a vulnerability. The first audit establishes a baseline; later phase entries must include the actual control changes and their verification.
-
-## The same structure after a hardening phase
-
-For Phase 2, for example, replace the inventory-only decision with the sudo policy you chose. Attach Alice's successful administrative test and Bob's refused test, performed under their own identities. Explain the difference and state that the broad lab admin role is not an appropriate read-only log-reader role. A copied configuration without these observations would be incomplete.
+It separates observed facts, the server's purpose, the decision, the next test and the remaining uncertainty. It does not equate a root-owned listener with a vulnerability. The first audit establishes a baseline; later phases must include their required evidence and verification.

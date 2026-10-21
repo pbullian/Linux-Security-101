@@ -2,7 +2,6 @@
   "student_id": "REPLACE",
   "assignment": "REPLACE",
   "assigned_phases": [],
-  "scenario_variants": {},
   "report": "report.md",
   "evidence": []
 }
